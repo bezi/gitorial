@@ -3,6 +3,13 @@
 
 gitorial = {};
 
+# Session
+gitorial.session = null
+gitorial.updateSession = ->
+    address = "/session"
+    $.getJSON address, (data) ->
+        gitorial.session = data;
+
 # Templating
 gitorial.templates =
     profile: Handlebars.compile $("#profile-template").html()
@@ -14,22 +21,17 @@ gitorial.templates =
 gitorial.routes = 
     profile: (params) ->
         address = '/api/' + params[0]
-        console.log "profile:", address
         $.getJSON address, (data) -> 
-            console.log data
             $('#container').html gitorial.templates.profile(data) 
 
     edit: (params) ->
         address = '/api/' + params[0] + '/' + params[1]
-        console.log "edit:", address
         $.getJSON address, (data) -> 
-            console.log data
             $('#container').html gitorial.templates.edit(data) 
 
     view: (params) ->
         address = '/api/' + params[0] + '/' + params[1]
         $.getJSON address, (data) -> 
-            console.log data
             $('#container').html gitorial.templates.view(data) 
 
     home: ->

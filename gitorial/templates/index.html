@@ -58,6 +58,8 @@
         </a>
         {{#if is_owner}}
         <a href="#" class="button new-tutorial-button"><i class="fa fa-plus-circle"></i>&nbsp;Create new tutorial</a>
+
+        <a href="#" class="button sign-out-button"><i class="fa fa-sign-out"></i>&nbsp;Sign out</a>
         {{/if}}
       </section>
       <section class="tutorials">
@@ -89,7 +91,10 @@
           </a>
         </span>
       </header>
-      <textarea rows=1 class="tutorial-title">{{title}}</textarea>
+      <header>
+        <textarea rows=1 class="tutorial-title">{{title}}</textarea>
+        <a href="#" class="tutorial-delete-button"><i class="fa fa-trash-o"></i></a>
+      </header>
       {{#each steps}}
       <section class="tutorial-step">
         <h1>
@@ -174,6 +179,7 @@
     </article>
   </script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/autosize.js/1.18.4/jquery.autosize.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.4/handlebars.min.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
