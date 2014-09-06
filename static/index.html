@@ -3,29 +3,52 @@
 <head>
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
   <title>Gitorial</title>
-  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600,700|Raleway:300,600">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css">
+  <link rel=stylesheet href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header class="main-header">
-    Gitorial
-  </header>
-  <nav>
-    <ul>
-      <li><a href="/#/home">Home</a></li>
-      <li><a href="/#/profile">Profile</a></li>
-      <li><a href="/#/edit">Edit</a></li>
-      <li><a href="/#/view">View</a></li>
-    </ul>
+  <nav style="float: right; font-size: 0.75rem; position: absolute; right: 1rem; top: 0.5rem;">
+    <a href="/#/home">Home</a>
+    <a href="/#/profile">Profile</a>
+    <a href="/#/edit">Edit</a>
+    <a href="/#/view">View</a>
   </nav>
   <div id="container">
 
   </div>
   <script id="home-template" type="text/x-handlebars-template">
     <article class="home-page">
-      <p>Make code tutorials with git repos.</p>
-      <button class="sign-in-button">Sign in with Github</button>
+      <header class="gitorial-header"><strong>git</strong>orial</header>
+      <p>Create programming tutorials with <a href="https://github.com/">Github</a> repos.</p>
+      <ol class="instructions">
+        <li>
+          <div class="instruction-label">
+            create
+          </div>
+          <p>
+            Create a git repo where each commit represents a step in your tutorial.
+          </p>
+        </li>
+        <li>
+          <div class="instruction-label">
+            edit
+          </div>
+          <p>
+            Add explanations for each step in our <a href="https://help.github.com/articles/github-flavored-markdown">Markdown</a> editing interface.
+          </p>
+        </li>
+        <li>
+          <div class="instruction-label">
+            publish
+          </div>
+          <p>
+            Publish your tutorial with a click of a button.
+          </p>
+        </li>
+      </ol>
+      <a href="#" class="sign-in-button">Sign in with Github <i class="contact-icon fa fa-github"></i></a>
     </article>
   </script>
   <script id="profile-template" type="text/x-handlebars-template">
