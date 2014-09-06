@@ -51,6 +51,9 @@ pip install -r requirements.txt
 
 # Sets up the database (new in Django 1.7 omg sho kewl)
 ./manage.py migrate
+
+# Install CoffeeScript (if you haven't already)
+npm install -g coffee-script
 ```
 
 

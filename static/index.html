@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Gitorial</title>
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="main-header">
+    Gitorial
+  </header>
+  <nav>
+    <ul>
+      <li><a href="/#/home">Home</a></li>
+      <li><a href="/#/profile">Profile</a></li>
+      <li><a href="/#/edit">Edit</a></li>
+      <li><a href="/#/view">View</a></li>
+    </ul>
+  </nav>
+  <div id="container">
+
+  </div>
+  <script id="home-template" type="text/x-handlebars-template">
+    <article class="home-page">
+      <p>Make code tutorials with git repos.</p>
+      <button class="sign-in-button">Sign in with Github</button>
+    </article>
+  </script>
+  <script id="profile-template" type="text/x-handlebars-template">
+    <article class="profile-page">
+      <header>{{name}}</header>
+      <img src="{{avatar_url}}" class="avatar">
+      <section class="tutorials">
+        <header>Tutorials</header>
+        {{#if is_current_user}}
+        <a href="/#/edit">Create new Gitorial</a>
+        {{/if}}
+        <ul>
+        {{#each tutorials}}
+          <li>
+            <a href="{{url}}">{{name}}</a>
+          </li>
+        {{/each}}
+        </ul>
+      </section>
+    </article>
+  </script>
+  <script id="edit-template" type="text/x-handlebars-template">
+    <article class="edit-page">
+      <input type="text" class="tutorial-title" value="{{title}}">
+      {{#each steps}}
+      <section class="tutorial-step">
+        <input type="text" class="step-title" value="{{title}}">
+        <textarea class="step-content-before">{{content_before}}</textarea>
+        <div class="step-code"></div>
+        <textarea class="step-content-after">{{content_after}}</textarea>
+      </section>
+      {{/each}}
+      <button class="tutorial-generate-button">Generate tutorial</button>
+    </article>
+  </script>
+  <script id="view-template" type="text/x-handlebars-template">
+    <article class="view-page">
+      <header>
+        <span class="tutorial-title">{{title}}</span>
+        {{#if is_current_user}}
+          <button class="tutorial-edit-button">Edit tutorial</button>
+        {{/if}}
+      </header>
+      {{#each steps}}
+      <section class="tutorial-step">
+        <h1 class="step-title">{{title}}</h1>
+        <div class="step-content-before">
+          {{content_before}}
+        </div>
+        <div class="step-code"></div>
+        <div class="step-content-after">
+          {{content_after}}
+        </div>
+      </section>
+      {{/each}}
+    </article>
+  </script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.4/handlebars.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
