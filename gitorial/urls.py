@@ -1,11 +1,12 @@
 from django.conf.urls import patterns, include, url
 
-urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'gitorial.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
+from . import views
 
+urlpatterns = patterns('',
+    # Pages
     url(r'^$', 'gitorial.views.index', name='index'),
 
-    url(r'^user/(?P<username>.+)/', 'views.user', name='user'),
+    # API
+    url(r'^api/(?P<username>.+)/(?P<tutname>[0-9]+)', views.tutorial),
+    url(r'^api/(?P<username>.+)', views.user),
 )

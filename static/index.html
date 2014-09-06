@@ -61,13 +61,12 @@
           {{username}}
         {{/if}}
         </a>
+        {{#if is_owner}}
         <a href="#" class="button new-tutorial-button"><i class="fa fa-plus-circle"></i>&nbsp;Create new tutorial</a>
+        {{/if}}
       </section>
       <section class="tutorials">
         <header>Tutorials</header>
-        {{#if is_owner}}
-        <a href="/#/edit">Create new Gitorial</a>
-        {{/if}}
         <ul>
         {{#each tutorials}}
           <li class="tutorial-listing">

@@ -1,5 +1,6 @@
 /* General */
 html {
+  background-color: #F8F8F8;
   color: #222;
   font: 20px 'Source Sans Pro', sans-serif;
   height: 100%;
@@ -16,7 +17,7 @@ a {
   text-decoration: none;
 }
 a:hover {
-  opacity: 0.7;
+  color: #FF4136;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -24,7 +25,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .gitorial-header {
-  color: black;
+  color: #444;
   font-family: Raleway, sans-serif
   font-weight: 300;
 
@@ -36,11 +37,11 @@ h1, h2, h3, h4, h5, h6 {
   user-select: none;
 }
 .gitorial-header > strong {
+  color: #FF4136;
   font-weight: 600;
 }
 
 .button {
-  background-color: white;
   border: 3px solid #333;
   border-radius: 25px;
   moz-border-radius: 25px;
@@ -48,6 +49,10 @@ h1, h2, h3, h4, h5, h6 {
   color: black;
   font-weight: 600;
   padding: 0.5rem;
+}
+.button:hover {
+  color: inherit;
+  opacity: 0.7;
 }
 
 #container {
@@ -99,7 +104,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .user-info {
-  background-color: #EEE;
+  background-color: #DDD;
   float: left;
   height: 100%;
   padding: 0 0.25rem;
@@ -126,7 +131,7 @@ h1, h2, h3, h4, h5, h6 {
   display: block;
   font-size: 0.8rem;
   margin: 1rem auto;
-  padding: 0.1rem;
+  padding: 0.25rem;
   width: 75%;
 }
 
@@ -135,7 +140,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 65%;
 }
 .tutorials > header {
-  background-color: white;
+  background-color: #F8F8F8;
   font-size: 4rem;
   font-weight: 500;
   padding-bottom: 1rem;
@@ -158,6 +163,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Edit & View */
 .edit-page, .view-page {
+  margin-bottom: 2rem;
   position: relative;
 }
 
@@ -189,6 +195,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Edit */
 input[type="text"], textarea {
+  background-color: #F4F4F4;
   border: 1px dashed #BBB;
   width: 100%;
 }
