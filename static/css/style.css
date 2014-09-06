@@ -62,21 +62,22 @@ h1, h2, h3, h4, h5, h6 {
   min-height: 100%;
 }
 
-/* Home */
-.home-page {
+/* Not Found & Home */
+.not-found-page, .home-page {
   padding-top: 2rem;
   padding-bottom: 2rem;
   text-align: center;
 }
 
-.home-page > header {
+.not-found-page > header, .home-page > header {
   font-size: 6rem;
 }
 
-.home-page > p {
+.not-found-page > p, .home-page > p {
   font-size: 1.5rem;
 }
 
+/* Home */
 .instructions {
   list-style: none;
   margin: 1rem 0 3rem 0;
@@ -104,6 +105,13 @@ h1, h2, h3, h4, h5, h6 {
   border-color: #0074D9;
   color: #0074D9;
   opacity: 1;
+}
+
+/* Not Found */
+.not-found-page > img {
+  margin: 1rem 0;
+  min-width: 300px;
+  width: 50%;
 }
 
 /* Profile */
@@ -408,11 +416,11 @@ code {
 }
 
 @media(max-width: 400px) {
-  .home-page > header {
+  .not-found-page > header, home-page > header {
     font-size: 4rem;
   }
 
-  .home-page > p {
+  .not-found-page > p, .home-page > p {
     font-size: 1.25rem;
   }
 

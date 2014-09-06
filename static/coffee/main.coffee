@@ -6,8 +6,14 @@ router = ->
     when 'profile' then renderProfile params
     when 'edit' then renderEdit params
     when 'view' then renderView params
+    when '404' then renderNotFound params
   $('textarea').autosize()
   return
+
+renderNotFound = (params) ->
+  templateSource = $("#not-found-template").html()
+  template = Handlebars.compile templateSource
+  $('#container').html template()
 
 renderHome = (params) ->
   templateSource = $("#home-template").html()
