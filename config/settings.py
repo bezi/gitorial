@@ -39,6 +39,9 @@ INSTALLED_APPS = (
 
     # OAuth library
     'social.apps.django_app.default',
+
+    # gitorial app
+    'gitorial',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -83,7 +86,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/assets/'
+STATIC_ROOT = 'assets'
+STATICFILES_DIR = (os.path.join(BASE_DIR, 'assets'))
 
 # Use GitHub for logging in users
 AUTHENTICATION_BACKENDS = (
