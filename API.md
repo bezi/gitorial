@@ -3,7 +3,7 @@
 Github metadata to allow us to build a profile page.
 
 GET:
-```
+```javascript
 response = {
     name: 'Tom Shen' // full name
     username: 'tomshen' // github username
@@ -18,12 +18,14 @@ response = {
     ]
 }
 ```
+
 GET, POST, DELETE
 
 if the person has never signed in with us, return nothing.
 
 If the person is the same as the person logged in, also add:
-```
+
+```javascript
     repos : [
         {
             name: 'name of repo'
@@ -36,7 +38,8 @@ If the person is the same as the person logged in, also add:
 /api/_user-name_/_tut-name_/
 ---
 GET:
-```
+
+```javascript
 response = {
     id: 21341234134
     title: 'tutorial title'
@@ -69,7 +72,8 @@ response = {
 ```
 
 POST:
-```
+
+```javascript
 request = {
     github_url: asdfsadf
     }
