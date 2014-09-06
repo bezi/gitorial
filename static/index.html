@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <nav style="float: right; font-size: 0.75rem; position: absolute; right: 1rem; top: 0.5rem;">
+  <nav style="float: right; font-size: 0.75rem; position: absolute; right: 1rem; top: 0.5rem; z-index: 999;">
     <a href="/#/home">Home</a>
     <a href="/#/profile">Profile</a>
     <a href="/#/edit">Edit</a>
@@ -21,7 +21,7 @@
   <script id="home-template" type="text/x-handlebars-template">
     <article class="home-page">
       <header class="gitorial-header"><strong>git</strong>orial</header>
-      <p>Create programming tutorials with <a href="https://github.com/">Github</a> repos.</p>
+      <p>Create programming tutorials with <a href="https://github.com/">GitHub</a> repos.</p>
       <ol class="instructions">
         <li>
           <div class="instruction-label">
@@ -48,7 +48,7 @@
           </p>
         </li>
       </ol>
-      <a href="#" class="sign-in-button">Sign in with Github <i class="contact-icon fa fa-github"></i></a>
+      <a href="#" class="button sign-in-button">Sign in with GitHub <i class="contact-icon fa fa-github"></i></a>
     </article>
   </script>
   <script id="profile-template" type="text/x-handlebars-template">
@@ -63,6 +63,7 @@
           {{username}}
         {{/if}}
         </a>
+        <a href="#" class="button new-tutorial-button"><i class="fa fa-plus-circle"></i>&nbsp;Create new tutorial</a>
       </section>
       <section class="tutorials">
         <header>Tutorials</header>

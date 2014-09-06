@@ -29,36 +29,6 @@ fakeProfileData =
       description: 'Handy dandy CSS tricks that you can use in your next website'
       url: '#/view/csstricks'
     }
-    {
-      title: 'JavaScript Quirks'
-      description: 'Super duper weird things about JavaScript you should know'
-      url: '#/view/javascriptquirks'
-    }
-    {
-      title: 'CSS Tricks'
-      description: 'Handy dandy CSS tricks that you can use in your next website'
-      url: '#/view/csstricks'
-    }
-    {
-      title: 'JavaScript Quirks'
-      description: 'Super duper weird things about JavaScript you should know'
-      url: '#/view/javascriptquirks'
-    }
-    {
-      title: 'CSS Tricks'
-      description: 'Handy dandy CSS tricks that you can use in your next website'
-      url: '#/view/csstricks'
-    }
-    {
-      title: 'JavaScript Quirks'
-      description: 'Super duper weird things about JavaScript you should know'
-      url: '#/view/javascriptquirks'
-    }
-    {
-      title: 'CSS Tricks'
-      description: 'Handy dandy CSS tricks that you can use in your next website'
-      url: '#/view/csstricks'
-    }
   ]
 
 renderProfile = (params) ->
