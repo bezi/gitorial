@@ -6,4 +6,6 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^$', 'gitorial.views.index', name='index'),
+
+    url(r'^user/(?P<username>.+)/', 'views.user', name='user'),
 )

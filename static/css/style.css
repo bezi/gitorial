@@ -19,6 +19,10 @@ a:hover {
   opacity: 0.7;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+}
+
 .gitorial-header {
   color: black;
   font-family: Raleway, sans-serif
@@ -101,7 +105,7 @@ a:hover {
   padding: 0 0.25rem;
   position: fixed;
   text-align: center;
-  width: 25%;
+  width: 20%;
 }
 .user-info > header {
   font-size: 3.8rem;
@@ -123,7 +127,7 @@ a:hover {
   font-size: 0.8rem;
   margin: 1rem auto;
   padding: 0.1rem;
-  width: 80%;
+  width: 75%;
 }
 
 .tutorials {
@@ -150,4 +154,113 @@ a:hover {
   color: #111;
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+/* Edit & View */
+.edit-page, .view-page {
+  position: relative;
+}
+
+.tutorial-header {
+  display: inline-block;
+  width: 100%;
+}
+
+.tutorial-header > .gitorial-header {
+  float: left;
+  font-size: 3rem;
+}
+
+.tutorial-header > span:last-child {
+  display: inline-block;
+  float: right;
+  margin: 1rem 0 1rem 0;
+  text-align: right;
+}
+
+.tutorial-header > span:last-child > .user-name {
+  font-size: 1.5rem;
+}
+
+.tutorial-title {
+  font-size: 4rem;
+  font-weight: bold;
+}
+
+/* Edit */
+input[type="text"], textarea {
+  border: 1px dashed #BBB;
+  width: 100%;
+}
+
+.tutorial-generate-button {
+  display: block;
+  font-size: 2rem;
+  margin: 2rem auto;
+  text-align: center;
+  width: 300px;
+}
+
+/* View */
+.tutorial-edit-button {
+  border: none;
+  float: right;
+  font-size: 4rem;
+}
+
+/* Code */
+.step-code {
+  border: 1px solid black;
+  margin: 1rem 0;
+  padding: 0.25rem 2.5% 0.5rem 2.5%;
+  width: 95%;
+}
+
+.step-code > :first-child {
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.step-code > :first-child > :first-child {
+  margin-right: 1rem;
+}
+
+.code-diff {
+  margin-bottom: 1rem;
+}
+
+.code-diff > header {
+  font-weight: 600;
+}
+
+.code-diff-lines {
+  list-style: none;
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.code-diff-lines > * {
+  overflow: auto;
+  width: 100%;
+}
+
+.code-diff-lines > * > code:first-child {
+  float: left;
+  width: 10%;
+}
+
+.code-diff-lines > * > code:last-child {
+  float: left;
+  width: 90%;
+}
+
+.addition > * {
+  background-color: #2ECC40;
+}
+.deletion > * {
+  background-color: #FF4136;
+}
+
+code {
+  font-size: 0.75rem;
 }
