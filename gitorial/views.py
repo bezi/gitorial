@@ -33,4 +33,33 @@ def user(request, username):
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 def tutorial(request, username, tutname):
-    return HttpResponse(username + ', ' + tutname)
+    line = {}
+    line['number'] = 33
+    line['content'] = 'int i = 3;'
+    line['addition'] = True
+    line['deletion'] = False
+
+    file_res = {}
+    file_res['name'] = "assign.c"
+    file_res['lines'] = [line]
+
+    commit = {}
+    commit['commit_url'] = "http://www.google.com"
+    commit['code_url'] = "http://www.facebook.com"
+    commit['files'] = [file_res]
+
+    step = {}
+    step['title'] = 'step_title'
+    step['content_before'] = 'not too'
+    step['commit'] = commit
+    step['content_after'] = 'hard to see what this does'
+
+    response = {}
+    response['id'] = 543125
+    response['title'] = 'tutorial title'
+    response['description'] = 'shizzles mach nizzles'
+    response['repo_url'] = 'github.com/here/it/is'
+    response['is_editable'] = True
+    response['steps'] = [step]
+    
+    return HttpResponse(json.dumps(response), content_type="application/json")

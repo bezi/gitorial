@@ -7,6 +7,6 @@ urlpatterns = patterns('',
     url(r'^$', 'gitorial.views.index', name='index'),
 
     # API
-    url(r'^(?P<username>.+)/(?P<tutname>[0-9]+)', views.tutorial),
-    url(r'^(?P<username>.+)', views.user),
+    url(r'^api/(?P<username>.+)/(?P<tutname>[0-9]+)', views.tutorial),
+    url(r'^api/(?P<username>.+)', views.user),
 )
