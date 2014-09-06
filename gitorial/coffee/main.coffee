@@ -111,6 +111,7 @@ gitorial.router = ->
         gitorial.routes.home()
 
 # attach listeners to errythang
+$('sign-in-button').on('click', gitorial.session.login);
 
 # call router
 gitorial.router()
