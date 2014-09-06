@@ -45,7 +45,22 @@ response = {
     steps: [
     title: 'step_title'
     content_before: 'not too'
-    diffs: '' // empty string until we actually implement this
+    diff: {
+        diff_url:
+        code_url:
+        
+        files [
+            {
+                name:
+                lines: [
+                    {
+                        number: 33
+                        content: "int i = 3;"
+                        addition: true/false
+                        deletion: true/false
+                    }]
+            }]
+            }
     content_after: 'hard to see what this does'
     ]
     }
