@@ -94,10 +94,12 @@
           </a>
         </span>
       </header>
-      <input type="text" class="tutorial-title" value="{{title}}">
+      <textarea rows=1 class="tutorial-title">{{title}}</textarea>
       {{#each steps}}
       <section class="tutorial-step">
-        <h1><input type="text" class="step-title" value="{{title}}"></h1>
+        <h1>
+          <textarea rows=1 class="step-title">{{title}}</textarea>
+        </h1>
         <textarea class="step-content-before">{{content_before}}</textarea>
         <div class="step-code">
           <div>
