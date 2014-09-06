@@ -6,6 +6,7 @@ router = ->
     when 'profile' then renderProfile params
     when 'edit' then renderEdit params
     when 'view' then renderView params
+  $('textarea').autosize()
   return
 
 renderHome = (params) ->
@@ -119,6 +120,8 @@ renderView = (params) ->
   $('#container').html template(fakeTutorialData)
 
 $(window).on 'hashchange', router
+
+
 
 if '#' in location.hash
   router()
