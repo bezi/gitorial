@@ -15,6 +15,7 @@ gitorial.session =
                 'x-csrftoken' : $.cookie 'csrftoken'
         .done (data) ->
             gitorial.session.username = data.username
+            return
         .fail gitorial.routes.fail
         
     username: null
@@ -81,6 +82,7 @@ gitorial.routes =
         $('#container').html gitorial.templates.fail()
 
 gitorial.router = ->
+    gitorial.session.update()
     route = location.hash[1..]
     [username, tutname, editflag] = route.replace(/\/$/, '').split('/')[1..];
     if editflag? and editflag == "edit" 

@@ -17,27 +17,18 @@ def index(request):
 
 def logout(request):
   django.contrib.auth.logout(request)
-  return HttpResponse()
+  return redirect('/')
 
 def session(request):
   if request.method == 'GET':
     if(request.user is not None and
        request.user.is_authenticated()):
-      user = {
-        'username': request.user.username,
-        'first_name': request.user.first_name,
-        'last_name': request.user.last_name,
-        'last_login': request.user.last_login,
-        'email': request.user.email,
-        'id': request.user.id,
-        'pk': request.user.pk
-      }
-
+      username = request.user.username
     else:
-      user = False
+      username = ''
 
     return HttpResponse(json.dumps({
-          'user': user
+          'username': username
         }),
         content_type="application/json")
 
