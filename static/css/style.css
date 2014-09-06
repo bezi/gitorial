@@ -7,8 +7,7 @@ html {
 }
 
 body {
-  margin: 0 auto;
-  max-width: 800px;
+  height: 100%;
 }
 
 a {
@@ -45,6 +44,12 @@ a:hover {
   color: black;
   font-weight: 600;
   padding: 0.5rem;
+}
+
+#container {
+  margin: 0 auto;
+  max-width: 800px;
+  min-height: 100%;
 }
 
 /* Home */
@@ -90,13 +95,16 @@ a:hover {
 }
 
 .user-info {
+  background-color: #EEE;
   float: left;
+  height: 100%;
+  padding: 0 0.25rem;
   position: fixed;
   text-align: center;
   width: 25%;
 }
 .user-info > header {
-  font-size: 4rem;
+  font-size: 3.8rem;
   margin-bottom: 1rem;
   text-align: center;
 }
