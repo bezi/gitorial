@@ -62,21 +62,22 @@ h1, h2, h3, h4, h5, h6 {
   min-height: 100%;
 }
 
-/* Home */
-.home-page {
+/* Not Found & Home */
+.not-found-page, .home-page {
   padding-top: 2rem;
   padding-bottom: 2rem;
   text-align: center;
 }
 
-.home-page > header {
+.not-found-page > header, .home-page > header {
   font-size: 6rem;
 }
 
-.home-page > p {
+.not-found-page > p, .home-page > p {
   font-size: 1.5rem;
 }
 
+/* Home */
 .instructions {
   list-style: none;
   margin: 1rem 0 3rem 0;
@@ -100,10 +101,17 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
   width: 85%;
 }
-.sign-in-button:hover {
+.home-page > .button:hover {
   border-color: #0074D9;
   color: #0074D9;
   opacity: 1;
+}
+
+/* Not Found */
+.not-found-page > img {
+  margin: 1rem 0;
+  min-width: 300px;
+  width: 50%;
 }
 
 /* Profile */
@@ -157,11 +165,11 @@ h1, h2, h3, h4, h5, h6 {
   color: #FF4136;
 }
 
-.tutorials {
+.user-listings {
   float: right;
   width: 65%;
 }
-.tutorials > header {
+.user-listings > header {
   background-color: #F8F8F8;
   font-size: 4rem;
   font-weight: 500;
@@ -169,15 +177,15 @@ h1, h2, h3, h4, h5, h6 {
   position: fixed;
   width: 100%;
 }
-.tutorials > ul {
+.user-listings > ul {
   list-style: none;
   margin: 6rem 0 1rem 0;
   padding: 0;
 }
-.tutorial-listing {
+.user-listing {
   display: block;
 }
-.tutorial-listing-title {
+.user-listing-title {
   color: #111;
   font-size: 1.5rem;
   font-weight: bold;
@@ -374,26 +382,26 @@ code {
     width: 300px;
   }
 
-  .tutorials {
+  .user-listings {
     float: none;
     margin-bottom: 2rem;
     width: inherit;
   }
-  .tutorials > header {
+  .user-listings > header {
     font-size: 4rem;
     font-weight: 500;
     position: inherit;
     width: 100%;
   }
-  .tutorials > ul {
+  .user-listings > ul {
     list-style: none;
     margin: 0;
     padding: 0;
   }
-  .tutorial-listing {
+  .user-listing {
     display: block;
   }
-  .tutorial-listing-title {
+  .user-listing-title {
     font-size: 1.5rem;
     font-weight: bold;
   }
@@ -408,11 +416,11 @@ code {
 }
 
 @media(max-width: 400px) {
-  .home-page > header {
+  .not-found-page > header, home-page > header {
     font-size: 4rem;
   }
 
-  .home-page > p {
+  .not-found-page > p, .home-page > p {
     font-size: 1.25rem;
   }
 
@@ -429,7 +437,7 @@ code {
     width: 80%;
   }
 
-  .tutorials > header {
+  .user-listings > header {
     font-size: 3rem;
   }
 
