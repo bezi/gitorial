@@ -7,7 +7,7 @@ def user(request, username):
     tutorial_data = {}
     tutorial_data['title'] = 'tutorial title'
     tutorial_data['description'] = 'Super duper cool tutorial'
-    tutorial_data['url'] = '#/view/bezi/tutorial'
+    tutorial_data['url'] = '#/bezi/1010'
 
     repo_data = {}
     repo_data['name'] = 'name of repo'
@@ -24,3 +24,6 @@ def user(request, username):
 
     
     return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+def tutorial(request, username, tutname):
+    return HttpResponse(username + ', ' + tutname)

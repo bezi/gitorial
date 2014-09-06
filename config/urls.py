@@ -9,5 +9,6 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^user/(?P<username>.+)/', views.user),
+    url(r'^(?P<username>.+)/(?P<tutname>[0-9]+)', views.tutorial),
+    url(r'^(?P<username>.+)', views.user),
 )
