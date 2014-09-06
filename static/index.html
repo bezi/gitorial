@@ -85,16 +85,28 @@
   </script>
   <script id="edit-template" type="text/x-handlebars-template">
     <article class="edit-page">
+      <header class="tutorial-header">
+        <span class="gitorial-header"><strong>git</strong>orial</span>
+        <span class="user-header">
+          <a href="#/profile/{{user.username}}" class="user-name">
+          {{#if user.name}}
+            {{user.name}}
+          {{else}}
+            {{user.username}}
+          {{/if}}
+          </a>
+        </span>
+      </header>
       <input type="text" class="tutorial-title" value="{{title}}">
       {{#each steps}}
       <section class="tutorial-step">
-        <input type="text" class="step-title" value="{{title}}">
+        <h1><input type="text" class="step-title" value="{{title}}"></h1>
         <textarea class="step-content-before">{{content_before}}</textarea>
         <div class="step-code"></div>
         <textarea class="step-content-after">{{content_after}}</textarea>
       </section>
       {{/each}}
-      <button class="tutorial-generate-button">Generate tutorial</button>
+      <a href="#" class="button tutorial-generate-button">Generate tutorial</a>
     </article>
   </script>
   <script id="view-template" type="text/x-handlebars-template">

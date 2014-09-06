@@ -37,12 +37,22 @@ renderProfile = (params) ->
   $('#container').html template(fakeProfileData)
 
 fakeTutorialData =
+  user: {
+    name: 'Tom Shen'
+    username: 'tomshen'
+    avatar_url: 'https://avatars0.githubusercontent.com/u/2065456?v=2&s=460'
+  }
   title: 'JavaScript Quirks'
   steps: [
     {
       title: 'Undefined vs null'
       content_before: 'Use null in your code'
       content_after: 'Undefined is used to show absence of value, not null values'
+    }
+    {
+      title: '=== vs =='
+      content_before: '== is incredibly inconsistent. Never use it.'
+      content_after: 'Always use ===, since it will never implicitly do type conversion.'
     }
   ]
 
