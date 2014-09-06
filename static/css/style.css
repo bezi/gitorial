@@ -295,11 +295,12 @@ textarea.tutorial-title {
 .code-diff-lines {
   list-style: none;
   margin: 0;
-  padding-left: 1rem;
+  padding: 0;
 }
 
 .code-diff-lines > * {
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   width: 100%;
 }
 
@@ -308,9 +309,14 @@ textarea.tutorial-title {
   width: 10%;
 }
 
+.code-diff-lines > * > code:nth-child(2) {
+  float: left;
+  width: 10%;
+}
+
 .code-diff-lines > * > code:last-child {
   float: left;
-  width: 90%;
+  width: 80%;
 }
 
 .addition > * {

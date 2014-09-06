@@ -1,0 +1,199 @@
+diff --git a/gitorial/coffee/main.coffee b/gitorial/coffee/main.coffee
+index 665712f..69ce7b1 100644
+--- a/gitorial/coffee/main.coffee
++++ b/gitorial/coffee/main.coffee
+@@ -3,6 +3,13 @@
+ 
+ gitorial = {};
+ 
++# Session
++gitorial.session = null
++gitorial.updateSession = ->
++    address = "/session"
++    $.getJSON address, (data) ->
++        gitorial.session = data;
++
+ # Templating
+ gitorial.templates =
+     profile: Handlebars.compile $("#profile-template").html()
+@@ -14,22 +21,17 @@ gitorial.templates =
+ gitorial.routes = 
+     profile: (params) ->
+         address = '/api/' + params[0]
+-        console.log "profile:", address
+         $.getJSON address, (data) -> 
+-            console.log data
+             $('#container').html gitorial.templates.profile(data) 
+ 
+     edit: (params) ->
+         address = '/api/' + params[0] + '/' + params[1]
+-        console.log "edit:", address
+         $.getJSON address, (data) -> 
+-            console.log data
+             $('#container').html gitorial.templates.edit(data) 
+ 
+     view: (params) ->
+         address = '/api/' + params[0] + '/' + params[1]
+         $.getJSON address, (data) -> 
+-            console.log data
+             $('#container').html gitorial.templates.view(data) 
+ 
+     home: ->
+diff --git a/gitorial/static/css/style.css b/gitorial/static/css/style.css
+index 8826eb0..029ea04 100644
+--- a/gitorial/static/css/style.css
++++ b/gitorial/static/css/style.css
+@@ -17,7 +17,7 @@ a {
+   text-decoration: none;
+ }
+ a:hover {
+-  color: #FF4136;
++  color: #0074D9;
+ }
+ 
+ h1, h2, h3, h4, h5, h6 {
+@@ -25,6 +25,7 @@ h1, h2, h3, h4, h5, h6 {
+ }
+ 
+ .gitorial-header {
++  border: none;
+   color: #444;
+   font-family: Raleway, sans-serif
+   font-weight: 300;
+@@ -42,7 +43,7 @@ h1, h2, h3, h4, h5, h6 {
+ }
+ 
+ .button {
+-  border: 0.15rem solid #333;
++  border: 0.25rem solid #333;
+   border-radius: 1rem;
+   moz-border-radius: 1rem;
+   -webkit-border-radius: 1rem;
+@@ -99,6 +100,11 @@ h1, h2, h3, h4, h5, h6 {
+   margin: 0;
+   width: 85%;
+ }
++.sign-in-button:hover {
++  border-color: #0074D9;
++  color: #0074D9;
++  opacity: 1;
++}
+ 
+ /* Profile */
+ .profile-page {
+@@ -129,13 +135,27 @@ h1, h2, h3, h4, h5, h6 {
+   margin: 0 auto;
+   width: 200px;
+ }
+-.new-tutorial-button {
++.user-info > .button {
+   display: block;
+   font-size: 0.8rem;
+   margin: 1rem auto;
+   padding: 0.25rem;
+   width: 75%;
+ }
++.new-tutorial-button {
++  border-color: #0074D9;
++  color: #0074D9;
++}
++.new-tutorial-button:hover {
++  color: #0074D9;
++}
++.sign-out-button {
++  border-color: #FF4136;
++  color: #FF4136;
++}
++.sign-out-button:hover {
++  color: #FF4136;
++}
+ 
+ .tutorials {
+   float: right;
+@@ -201,21 +221,43 @@ textarea {
+   border: 0.05rem dashed #BBB;
+   width: 100%;
+ }
++textarea.tutorial-title {
++  width: 90%;
++}
++
++.tutorial-delete-button {
++  border: none;
++  color: inherit;
++  float: right;
++  font-size: 4rem;
++}
++.tutorial-delete-button:hover {
++  color: #FF4136;
++}
+ 
+ .tutorial-generate-button {
++  border-color: #0074D9;
++  color: #0074D9;
+   display: block;
+   font-size: 2rem;
+   margin: 2rem auto;
+   text-align: center;
+   width: 300px;
+ }
++.tutorial-generate-button:hover {
++  color: #0074D9;
++}
+ 
+ /* View */
+ .tutorial-edit-button {
+   border: none;
++  color: inherit;
+   float: right;
+   font-size: 4rem;
+ }
++.tutorial-edit-button:hover {
++  color: #0074D9;
++}
+ 
+ /* Code */
+ .step-code {
+@@ -404,7 +446,7 @@ code {
+     width: 200px;
+   }
+ 
+-  .tutorial-edit-button {
++  .tutorial-delete-button, .tutorial-edit-button {
+     font-size: 2rem;
+   }
+ }
+\ No newline at end of file
+diff --git a/gitorial/templates/index.html b/gitorial/templates/index.html
+index 6fc5982..a7cad9e 100644
+--- a/gitorial/templates/index.html
++++ b/gitorial/templates/index.html
+@@ -58,6 +58,8 @@
+         </a>
+         {{#if is_owner}}
+         <a href="#" class="button new-tutorial-button"><i class="fa fa-plus-circle"></i>&nbsp;Create new tutorial</a>
++
++        <a href="#" class="button sign-out-button"><i class="fa fa-sign-out"></i>&nbsp;Sign out</a>
+         {{/if}}
+       </section>
+       <section class="tutorials">
+@@ -89,7 +91,10 @@
+           </a>
+         </span>
+       </header>
+-      <textarea rows=1 class="tutorial-title">{{title}}</textarea>
++      <header>
++        <textarea rows=1 class="tutorial-title">{{title}}</textarea>
++        <a href="#" class="tutorial-delete-button"><i class="fa fa-trash-o"></i></a>
++      </header>
+       {{#each steps}}
+       <section class="tutorial-step">
+         <h1>
+@@ -174,6 +179,7 @@ <h1 class="step-title">{{title}}</h1>
+     </article>
+   </script>
+   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
++  <script src="//cdnjs.cloudflare.com/ajax/libs/autosize.js/1.18.4/jquery.autosize.min.js"></script>
+   <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.4/handlebars.min.js"></script>
+   <script src="assets/js/main.js"></script>
+ </body>

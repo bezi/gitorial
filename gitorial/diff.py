@@ -13,7 +13,7 @@ def parse(diff_text):
         f = {}
         lines = file_diff.split('\n')
         f['name'] = lines[1][5:]
-        f['lines'] = []
+        f['chunks'] = []
         for file_chunk_diff in file_diff.split('\n@@')[1:]:
             lines = file_chunk_diff.split('\n')
             old_line_numbers, new_line_numbers = ((int(s), int(e))
@@ -21,29 +21,40 @@ def parse(diff_text):
             lines[0] = lines[0][re.search(' .* @@', lines[0]).end():]
             old_line_number = old_line_numbers[0]
             new_line_number = new_line_numbers[0]
+            chunk_lines = []
             for line in lines:
+                def get_whitespace(l):
+                    return re.match(r'\s*', l).group().replace(' ', '&nbsp;').replace('\t', '&#09;')
                 if len(line) < 1 or line[0] is ' ':
-                    f['lines'].append({
+                    chunk_lines.append({
                         'old_number': old_line_number,
                         'new_number': new_line_number,
-                        'content': '' if len(line) is 0 else line[1:]
+                        'content': '' if len(line) is 0 else line[1:].strip()
                     })
                     old_line_number += 1
                     new_line_number += 1
                 elif line[0] is '-':
-                    f['lines'].append({
+                    chunk_lines.append({
                         'old_number': old_line_number,
-                        'content': line[1:],
+                        'content': line[1:].strip(),
+                        'whitespace': get_whitespace(line[1:]),
                         'deletion': True
                     })
                     old_line_number += 1
                 elif line[0] is '+':
-                    f['lines'].append({
+                    chunk_lines.append({
                         'new_number': new_line_number,
-                        'content': line[1:],
+                        'content': line[1:].strip(),
+                        'whitespace': get_whitespace(line[1:]),
                         'addition': True
                     })
                     new_line_number += 1
+            f['chunks'].append(chunk_lines)
 
         files.append(f)
     return files
+
+if __name__ == '__main__':
+    with open('diff.txt') as f:
+        import json
+        print(json.dumps(parse(f.read())))
