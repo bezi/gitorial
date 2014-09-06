@@ -1,40 +1,55 @@
 from django.shortcuts import render, render_to_response, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotAllowed
 from django.template import RequestContext
 import django.contrib.auth
+import social.apps.django_app.views
 
 import json
 
 # Create your views here.
 def index(request):
-  if(request.user is not None and request.user.is_authenticated()):
-    user = {
-      'username': request.user.username,
-      'first_name': request.user.first_name,
-      'last_name': request.user.last_name,
-      'last_login': request.user.last_login,
-      'email': request.user.email,
-      'id': request.user.id,
-      'pk': request.user.pk
-    }
-
-    # I can't find an attribute for pictures.
-    # We can either get this manually (with the API itself),
-    # or I might be able to figure it out with python-social-auth
-
-    print('---')
-    print('\n'.join(dir(request.user)))
-    print('---')
-  else:
-    user = None
-
   return render_to_response('index.html', 
-      {'gitorial_user': user}, 
+      {}, 
       context_instance=RequestContext(request))
 
-def logout(request):
-  django.contrib.auth.logout(request)
-  return redirect('/')
+def session(request):
+  if request.method == 'POST':
+    social.apps.django_app.views.auth(request, 'github')
+
+  elif request.method == 'GET':
+    if(request.user is not None and
+       request.user.is_authenticated()):
+      user = {
+        'username': request.user.username,
+        'first_name': request.user.first_name,
+        'last_name': request.user.last_name,
+        'last_login': request.user.last_login,
+        'email': request.user.email,
+        'id': request.user.id,
+        'pk': request.user.pk
+      }
+
+      # I can't find an attribute for pictures.
+      # We can either get this manually (with the API itself),
+      # or I might be able to figure it out with python-social-auth
+
+      print('---')
+      print('\n'.join(dir(request.user)))
+      print('---')
+    else:
+      user = False
+
+    return HttpResponse(json.dumps({
+          'user': user
+        }),
+        content_type="application/json")
+    
+  elif request.method == 'DELETE':
+    django.contrib.auth.logout(request)
+    return HttpResponse()
+
+  else:
+    return HttpResponseNotAllowed(['POST', 'GET', 'DELETE'])
 
 def user(request, username):
     tutorial_a = {}

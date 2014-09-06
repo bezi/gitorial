@@ -40,7 +40,7 @@ class Line(models.Model):
     src_file = models.ForeignKey(File)
     number = models.IntegerField()
     content = models.CharField(max_length=200)
-    addition = models.BooleanField()
-    deletion = models.BooleanField()
+    addition = models.BooleanField(default=False)
+    deletion = models.BooleanField(default=False)
     def __str__(self):
         return content

@@ -14,8 +14,16 @@
     <a href="/#/profile">Profile</a>
     <a href="/#/edit">Edit</a>
     <a href="/#/view">View</a>
+    <a href="/#/404">404</a>
   </nav>
   <div id="container"></div>
+  <script id="not-found-template" type="text/x-handlebars-template">
+    <article class="not-found-page">
+      <header class="gitorial-header"><strong>git</strong>orial</header>
+      <img src="img/panda.jpg" alt="Confused Panda">
+      <p>Page not found. <a href="/#/home">Return to home page</a></p>
+    </article>
+  </script>
   <script id="home-template" type="text/x-handlebars-template">
     <article class="home-page">
       <header class="gitorial-header"><strong>git</strong>orial</header>
@@ -46,7 +54,11 @@
           </p>
         </li>
       </ol>
+      {{#if is_logged_in}}
+      <a href="#/{{username}}" class="button go-to-profile-button"><i class="fa fa-user"></i> Go to profile</a>
+      {{else}}
       <a href="#" class="button sign-in-button"><i class="contact-icon fa fa-github"></i> Sign in with GitHub</a>
+      {{/if}}
     </article>
   </script>
   <script id="profile-template" type="text/x-handlebars-template">
@@ -66,19 +78,35 @@
         <a href="#" class="button sign-out-button"><i class="fa fa-sign-out"></i>&nbsp;Sign out</a>
         {{/if}}
       </section>
-      <section class="tutorials">
-        <header>Tutorials</header>
+      {{#if repos}}
+      <section class="user-listings">
+        <header>select a repo</header>
         <ul>
-        {{#each tutorials}}
-          <li class="tutorial-listing">
-            <a href="{{url}}" class="tutorial-listing-title">{{title}}</a>
-            <p class="tutorial-listing-description">
+        {{#each repos}}
+          <li class="user-listing">
+            <a href="{{url}}" class="user-listing-title">{{title}}</a>
+            <p class="user-listing-description">
               {{description}}
             </p>
           </li>
         {{/each}}
         </ul>
       </section>
+      {{else}}{{#if tutorials}}
+      <section class="user-listings">
+        <header>tutorials</header>
+        <ul>
+        {{#each tutorials}}
+          <li class="user-listing">
+            <a href="{{url}}" class="user-listing-title">{{title}}</a>
+            <p class="user-listing-description">
+              {{description}}
+            </p>
+          </li>
+        {{/each}}
+        </ul>
+      </section>
+      {{/if}}{{/if}}
     </article>
   </script>
   <script id="edit-template" type="text/x-handlebars-template">
