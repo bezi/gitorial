@@ -36,6 +36,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # OAuth library
+    'social.apps.django_app.default',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -81,3 +84,24 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Use GitHub for logging in users
+AUTHENTICATION_BACKENDS = (
+  'social.backends.github.GithubOAuth2',
+)
+
+# Use social template context processors
+TEMPLATE_CONTEXT_PROCESSORS = (
+  # Default setting for TEMPLATE_CONTEXT_PROCESSORS
+  'django.contrib.auth.context_processors.auth',
+  'django.core.context_processors.debug',
+  'django.core.context_processors.i18n',
+  'django.core.context_processors.media',
+  'django.core.context_processors.static',
+  'django.core.context_processors.tz',
+  'django.contrib.messages.context_processors.messages',
+
+  # Add social data to the template context
+  'social.apps.django_app.context_processors.backends',
+  'social.apps.django_app.context_processors.login_redirect',
+)
