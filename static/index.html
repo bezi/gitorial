@@ -193,10 +193,30 @@
           <section class="code-diff">
             <header>{{name}}:</header>
             <ol class="code-diff-lines">
-            {{#each lines}}
+            {{#each chunks}}
+              {{#each this}}
               <li class="{{#if addition}}addition{{/if}} {{#if deletion}}deletion{{/if}}">
-                <code>{{number}}</code>
-                <code>{{content}}</code>
+                <code>
+                {{#if old_number}}
+                  {{old_number}}
+                  {{else}}
+                  &nbsp;&nbsp;&nbsp;
+                  {{/if}}
+                </code>
+                <code>
+                  {{#if new_number}}
+                  {{new_number}}
+                  {{else}}
+                  &nbsp;&nbsp;&nbsp;
+                  {{/if}}
+                </code>
+                <code>
+                  {{{whitespace}}}{{content}}&nbsp;
+                </code>
+              </li>
+              {{/each}}
+              <li>
+                <hr>
               </li>
             {{/each}}
             </ol>

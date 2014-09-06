@@ -55,14 +55,16 @@ response = {
             files: [
                 {
                     name:
-                    lines: [
-                        {
-                            old_number: 33/undefined
-                            new_number: 35/undefined
-                            content: "int i = 3;"
-                            addition: true/false/undefined
-                            deletion: true/false/undefined
-                        }
+                    chunks: [
+                        [
+                            {
+                                old_number: 33/undefined
+                                new_number: 35/undefined
+                                content: "int i = 3;"
+                                addition: true/false/undefined
+                                deletion: true/false/undefined
+                            }
+                        ]
                     ]
                 }
             ]
