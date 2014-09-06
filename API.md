@@ -35,7 +35,7 @@ If the person is the same as the person logged in, also add:
         ]
 ```
 
-/api/_user-name_/_tut-name_/
+/api/_user-name_/_tut-num_/
 ---
 GET:
 
@@ -57,10 +57,11 @@ response = {
                     name:
                     lines: [
                         {
-                            number: 33
+                            old_number: 33/undefined
+                            new_number: 35/undefined
                             content: "int i = 3;"
-                            addition: true/false
-                            deletion: true/false
+                            addition: true/false/undefined
+                            deletion: true/false/undefined
                         }
                     ]
                 }
