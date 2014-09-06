@@ -1,0 +1,80 @@
+/* General */
+html {
+  color: #222;
+  font: 20px 'Source Sans Pro', sans-serif;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+a {
+  border-bottom: 2px solid;
+  color: #444;
+  text-decoration: none;
+}
+a:hover {
+  opacity: 0.7;
+}
+
+.gitorial-header {
+  color: black;
+  font: 300 6rem Raleway, sans-serif;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.gitorial-header > strong {
+  font-weight: 600;
+}
+
+/* Home */
+.home-page {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.home-page > p {
+  font-size: 1.5rem;
+}
+
+.instructions {
+  list-style: none;
+  margin: 1rem 0 3rem 0;
+  overflow: auto;
+  text-align: left;
+}
+.instructions > li {
+  height: 100%;
+  padding: 0.5rem 0;
+  overflow: auto;
+}
+.instruction-label {
+  float: left;
+  font-weight: bold;
+  text-align: right;
+  width: 15%;
+}
+.instructions > li > p {
+  float: right;
+  margin: 0;
+  width: 80%;
+}
+
+.sign-in-button {
+  background-color: white;
+  border: 3px solid #333;
+  border-radius: 25px;
+  moz-border-radius: 25px;
+  -webkit-border-radius: 25px;
+  color: black;
+  font-weight: 600;
+  padding: 0.5rem;
+}
