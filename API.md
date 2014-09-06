@@ -45,8 +45,8 @@ response = {
     steps: [
     title: 'step_title'
     content_before: 'not too'
-    diff: {
-        diff_url:
+    commit: {
+        commit_url:
         code_url:
         
         files [
