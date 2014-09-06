@@ -15,9 +15,7 @@
     <a href="/#/edit">Edit</a>
     <a href="/#/view">View</a>
   </nav>
-  <div id="container">
-
-  </div>
+  <div id="container"></div>
   <script id="home-template" type="text/x-handlebars-template">
     <article class="home-page">
       <header class="gitorial-header"><strong>git</strong>orial</header>
@@ -48,7 +46,7 @@
           </p>
         </li>
       </ol>
-      <a href="#" class="button sign-in-button">Sign in with GitHub <i class="contact-icon fa fa-github"></i></a>
+      <a href="#" class="button sign-in-button"><i class="contact-icon fa fa-github"></i> Sign in with GitHub</a>
     </article>
   </script>
   <script id="profile-template" type="text/x-handlebars-template">
@@ -87,7 +85,7 @@
     <article class="edit-page">
       <header class="tutorial-header">
         <span class="gitorial-header"><strong>git</strong>orial</span>
-        <span class="user-header">
+        <span>
           <a href="#/profile/{{user.username}}" class="user-name">
           {{#if user.name}}
             {{user.name}}
