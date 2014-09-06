@@ -109,10 +109,22 @@
   </script>
   <script id="view-template" type="text/x-handlebars-template">
     <article class="view-page">
+      <header class="tutorial-header">
+        <span class="gitorial-header"><strong>git</strong>orial</span>
+        <span>
+          <a href="#/profile/{{user.username}}" class="user-name">
+          {{#if user.name}}
+            {{user.name}}
+          {{else}}
+            {{user.username}}
+          {{/if}}
+          </a>
+        </span>
+      </header>
       <header>
         <span class="tutorial-title">{{title}}</span>
         {{#if is_owner}}
-          <button class="tutorial-edit-button">Edit tutorial</button>
+          <a href="#" class="tutorial-edit-button"><i class="fa fa-edit"></i></a>
         {{/if}}
       </header>
       {{#each steps}}

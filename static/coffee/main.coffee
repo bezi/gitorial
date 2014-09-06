@@ -40,8 +40,8 @@ fakeTutorialData =
   user: {
     name: 'Tom Shen'
     username: 'tomshen'
-    avatar_url: 'https://avatars0.githubusercontent.com/u/2065456?v=2&s=460'
   }
+  is_owner: true
   title: 'JavaScript Quirks'
   steps: [
     {

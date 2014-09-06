@@ -200,3 +200,10 @@ input[type="text"], textarea {
   text-align: center;
   width: 300px;
 }
+
+/* View */
+.tutorial-edit-button {
+  border: none;
+  float: right;
+  font-size: 4rem;
+}
