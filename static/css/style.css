@@ -22,7 +22,8 @@ a:hover {
 
 .gitorial-header {
   color: black;
-  font: 300 6rem Raleway, sans-serif;
+  font-family: Raleway, sans-serif
+  font-weight: 300;
 
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -35,10 +36,25 @@ a:hover {
   font-weight: 600;
 }
 
+.button {
+  background-color: white;
+  border: 3px solid #333;
+  border-radius: 25px;
+  moz-border-radius: 25px;
+  -webkit-border-radius: 25px;
+  color: black;
+  font-weight: 600;
+  padding: 0.5rem;
+}
+
 /* Home */
 .home-page {
-  margin-top: 2rem;
+  padding-top: 2rem;
   text-align: center;
+}
+
+.home-page > header {
+  font-size: 6rem;
 }
 
 .home-page > p {
@@ -68,13 +84,62 @@ a:hover {
   width: 85%;
 }
 
-.sign-in-button {
-  background-color: white;
-  border: 3px solid #333;
-  border-radius: 25px;
-  moz-border-radius: 25px;
-  -webkit-border-radius: 25px;
+/* Profile */
+.profile-page {
+  position: relative;
+}
+
+.user-info {
+  float: left;
+  position: fixed;
+  text-align: center;
+  width: 25%;
+}
+.user-info > header {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.user-name {
+  border: none;
   color: black;
-  font-weight: 600;
-  padding: 0.5rem;
+  font-size: 2rem;
+}
+.avatar {
+  display: block;
+  margin: 0 auto;
+  width: 200px;
+}
+.new-tutorial-button {
+  display: block;
+  font-size: 0.8rem;
+  margin: 1rem auto;
+  padding: 0.1rem;
+  width: 80%;
+}
+
+.tutorials {
+  float: right;
+  width: 65%;
+}
+.tutorials > header {
+  background-color: white;
+  font-size: 4rem;
+  font-weight: 500;
+  padding-bottom: 1rem;
+  position: fixed;
+  width: 100%;
+}
+.tutorials > ul {
+  list-style: none;
+  margin: 4.5rem 0 1rem 0;
+  padding: 0;
+}
+.tutorial-listing {
+  display: block;
+}
+.tutorial-listing-title {
+  color: #111;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
