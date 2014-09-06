@@ -63,6 +63,7 @@
         </a>
         {{#if is_owner}}
         <a href="#" class="button new-tutorial-button"><i class="fa fa-plus-circle"></i>&nbsp;Create new tutorial</a>
+        <a href="#" class="button sign-out-button"><i class="fa fa-sign-out"></i>&nbsp;Sign out</a>
         {{/if}}
       </section>
       <section class="tutorials">
@@ -94,7 +95,10 @@
           </a>
         </span>
       </header>
-      <textarea rows=1 class="tutorial-title">{{title}}</textarea>
+      <header>
+        <textarea rows=1 class="tutorial-title">{{title}}</textarea>
+        <a href="#" class="tutorial-delete-button"><i class="fa fa-trash-o"></i></a>
+      </header>
       {{#each steps}}
       <section class="tutorial-step">
         <h1>
@@ -143,7 +147,7 @@
       <header>
         <span class="tutorial-title">{{title}}</span>
         {{#if is_owner}}
-          <a href="#" class="tutorial-edit-button"><i class="fa fa-edit"></i></a>
+        <a href="#" class="tutorial-edit-button"><i class="fa fa-edit"></i></a>
         {{/if}}
       </header>
       {{#each steps}}
