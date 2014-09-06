@@ -1,9 +1,181 @@
+{% verbatim %}
+<!DOCTYPE html>
 <html>
 <head>
-  <title>Hey there!</title>
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Gitorial</title>
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700|Raleway:300,600">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css">
+  <link rel=stylesheet href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-  Hello, world!
-  {{ gitorial_user }}
+  <div id="container"></div>
+  <script id="home-template" type="text/x-handlebars-template">
+    <article class="home-page">
+      <header class="gitorial-header"><strong>git</strong>orial</header>
+      <p>Create programming tutorials with <a href="https://github.com/">GitHub</a> repos.</p>
+      <ol class="instructions">
+        <li>
+          <div class="instruction-label">
+            create
+          </div>
+          <p>
+            Create a git repo where each commit represents a step in your tutorial.
+          </p>
+        </li>
+        <li>
+          <div class="instruction-label">
+            edit
+          </div>
+          <p>
+            Add explanations for each step in our <a href="https://help.github.com/articles/github-flavored-markdown">Markdown</a> editing interface.
+          </p>
+        </li>
+        <li>
+          <div class="instruction-label">
+            publish
+          </div>
+          <p>
+            Publish your tutorial with a click of a button.
+          </p>
+        </li>
+      </ol>
+      <a href="#" class="button sign-in-button"><i class="contact-icon fa fa-github"></i> Sign in with GitHub</a>
+    </article>
+  </script>
+  <script id="profile-template" type="text/x-handlebars-template">
+    <article class="profile-page">
+      <section class="user-info">
+        <header class="gitorial-header"><strong>git</strong>orial</header>
+        <img src="{{avatar_url}}" class="avatar">
+        <a href="https://github.com/{{username}}" class="user-name">
+        {{#if name}}
+          {{name}}
+        {{else}}
+          {{username}}
+        {{/if}}
+        </a>
+        {{#if is_owner}}
+        <a href="#" class="button new-tutorial-button"><i class="fa fa-plus-circle"></i>&nbsp;Create new tutorial</a>
+        {{/if}}
+      </section>
+      <section class="tutorials">
+        <header>Tutorials</header>
+        <ul>
+        {{#each tutorials}}
+          <li class="tutorial-listing">
+            <a href="{{url}}" class="tutorial-listing-title">{{title}}</a>
+            <p class="tutorial-listing-description">
+              {{description}}
+            </p>
+          </li>
+        {{/each}}
+        </ul>
+      </section>
+    </article>
+  </script>
+  <script id="edit-template" type="text/x-handlebars-template">
+    <article class="edit-page">
+      <header class="tutorial-header">
+        <span class="gitorial-header"><strong>git</strong>orial</span>
+        <span>
+          <a href="#/profile/{{user.username}}" class="user-name">
+          {{#if user.name}}
+            {{user.name}}
+          {{else}}
+            {{user.username}}
+          {{/if}}
+          </a>
+        </span>
+      </header>
+      <textarea rows=1 class="tutorial-title">{{title}}</textarea>
+      {{#each steps}}
+      <section class="tutorial-step">
+        <h1>
+          <textarea rows=1 class="step-title">{{title}}</textarea>
+        </h1>
+        <textarea class="step-content-before">{{content_before}}</textarea>
+        <div class="step-code">
+          <div>
+            <a href="{{diff.diff_url}}">View diff</a>
+            <a href="{{diff.code_url}}">View code</a>
+          </div>
+          {{#each diff.files}}
+          <section class="code-diff">
+            <header>{{name}}:</header>
+            <ol class="code-diff-lines">
+            {{#each lines}}
+              <li class="{{#if addition}}addition{{/if}} {{#if deletion}}deletion{{/if}}">
+                <code>{{number}}</code>
+                <code>{{content}}</code>
+              </li>
+            {{/each}}
+            </ol>
+          </section>
+          {{/each}}
+        </div>
+        <textarea class="step-content-after">{{content_after}}</textarea>
+      </section>
+      {{/each}}
+      <a href="#" class="button tutorial-generate-button">Generate tutorial</a>
+    </article>
+  </script>
+  <script id="view-template" type="text/x-handlebars-template">
+    <article class="view-page">
+      <header class="tutorial-header">
+        <span class="gitorial-header"><strong>git</strong>orial</span>
+        <span>
+          <a href="#/profile/{{user.username}}" class="user-name">
+          {{#if user.name}}
+            {{user.name}}
+          {{else}}
+            {{user.username}}
+          {{/if}}
+          </a>
+        </span>
+      </header>
+      <header>
+        <span class="tutorial-title">{{title}}</span>
+        {{#if is_editable}}
+          <a href="#" class="tutorial-edit-button"><i class="fa fa-edit"></i></a>
+        {{/if}}
+      </header>
+      {{#each steps}}
+      <section class="tutorial-step">
+        <h1 class="step-title">{{title}}</h1>
+        <div class="step-content-before">
+          {{content_before}}
+        </div>
+        <div class="step-code">
+          <div>
+            <a href="{{diff.diff_url}}">View diff</a>
+            <a href="{{diff.code_url}}">View code</a>
+          </div>
+          {{#each diff.files}}
+          <section class="code-diff">
+            <header>{{name}}:</header>
+            <ol class="code-diff-lines">
+            {{#each lines}}
+              <li class="{{#if addition}}addition{{/if}} {{#if deletion}}deletion{{/if}}">
+                <code>{{number}}</code>
+                <code>{{content}}</code>
+              </li>
+            {{/each}}
+            </ol>
+          </section>
+          {{/each}}
+        </div>
+        <div class="step-content-after">
+          {{content_after}}
+        </div>
+      </section>
+      {{/each}}
+    </article>
+  </script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.4/handlebars.min.js"></script>
+  <script src="assets/js/main.js"></script>
 </body>
 </html>
+{% endverbatim %}
