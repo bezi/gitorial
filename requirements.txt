@@ -1,5 +1,6 @@
 Django==1.7
 certifi==14.05.14
+gunicorn==19.1.1
 oauthlib==0.6.3
 python-social-auth==0.1.26
 python3-openid==3.0.4
