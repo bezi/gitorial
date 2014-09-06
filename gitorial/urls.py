@@ -6,8 +6,9 @@ urlpatterns = patterns('',
     # Pages
     url(r'^$', 'gitorial.views.index', name='index'),
 
-    # logout
-    url(r'session/', 'gitorial.views.session', name='session'),
+    # login/logout
+    url(r'login/', 'gitorial.views.login', name='login'),
+    url(r'logout/', 'gitorial.views.logout', name='logout'),
 
     # API
     url(r'^api/(?P<username>.+)/(?P<tutnum>[0-9]+)/$', views.tutorial),
