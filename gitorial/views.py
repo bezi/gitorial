@@ -72,9 +72,7 @@ def user_view(request, username):
     try:
       user = User.objects.get(username=username)
 
-      return HttpResponse(json.dumps({
-        'user': user.getDict()
-      }),
+      return HttpResponse(json.dumps(user.getDict()),
       content_type="application/json")
     except:
       return HttpResponseNotFound()

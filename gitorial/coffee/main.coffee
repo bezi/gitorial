@@ -1,7 +1,7 @@
 # @file main.coffee
 # @brief Defines the routes and javascript events for the gitorial app
 
-gitorial = {};
+window.gitorial = {};
 
 # Session
 gitorial.session =
@@ -14,28 +14,10 @@ gitorial.session =
             headers: 
                 'x-csrftoken' : $.cookie 'csrftoken'
         .done (data) ->
-            gitorial.session.session = data
+            gitorial.session.username = data.username
         .fail gitorial.routes.fail
-
-    login: ->
-        $.ajax
-            dataType: 'json'            
-            type: 'POST'
-            url: '/api/session/'
-            headers: 
-                'x-csrftoken' : $.cookie 'csrftoken'
-        .done gitorial.session.update
-
-    logout: ->
-        $.ajax
-            dataType: 'json'            
-            type: 'DELETE'
-            url: '/api/session/'
-            headers: 
-                'x-csrftoken' : $.cookie 'csrftoken'
-        .done gitorial.session.update
         
-    session: null
+    username: null
 
 # Templating
 gitorial.templates =
@@ -110,12 +92,8 @@ gitorial.router = ->
     else 
         gitorial.routes.home()
 
-# attach listeners to errythang
-
 # call router
 gitorial.router()
+
 $ window 
 .on 'hashchange', gitorial.router
-
-# export gitorial
-window.gitorial = gitorial
