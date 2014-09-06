@@ -78,19 +78,35 @@
         <a href="#" class="button sign-out-button"><i class="fa fa-sign-out"></i>&nbsp;Sign out</a>
         {{/if}}
       </section>
-      <section class="tutorials">
-        <header>Tutorials</header>
+      {{#if repos}}
+      <section class="user-listings">
+        <header>select a repo</header>
         <ul>
-        {{#each tutorials}}
-          <li class="tutorial-listing">
-            <a href="{{url}}" class="tutorial-listing-title">{{title}}</a>
-            <p class="tutorial-listing-description">
+        {{#each repos}}
+          <li class="user-listing">
+            <a href="{{url}}" class="user-listing-title">{{title}}</a>
+            <p class="user-listing-description">
               {{description}}
             </p>
           </li>
         {{/each}}
         </ul>
       </section>
+      {{else}}{{#if tutorials}}
+      <section class="user-listings">
+        <header>tutorials</header>
+        <ul>
+        {{#each tutorials}}
+          <li class="user-listing">
+            <a href="{{url}}" class="user-listing-title">{{title}}</a>
+            <p class="user-listing-description">
+              {{description}}
+            </p>
+          </li>
+        {{/each}}
+        </ul>
+      </section>
+      {{/if}}{{/if}}
     </article>
   </script>
   <script id="edit-template" type="text/x-handlebars-template">
