@@ -8,10 +8,10 @@ class User(models.Model):
 
     def getDict(self):
       return {
-          'name': user.name,
-          'username': user.username,
-          'avatar_url': user.avatar_url,
-          'last_updated': user.last_updated
+          'name': self.name,
+          'username': self.username,
+          'avatar_url': self.avatar_url,
+          'last_updated': str (self.last_updated)
       }
 
     def __str__(self):
