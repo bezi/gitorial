@@ -54,45 +54,56 @@ def session(request):
 
 def user(request, username):
     user_entry = User.objects.get(username=username.strip('/'))
-    user_tutorials = Tutorial.objects.filter(owner=user_entry).values('title', 'description', 'repo_url')
     response = {'name': user_entry.name,
                 'username': user_entry.username,
                 'avatar_url': user_entry.avatar_url,
                 'is_owner': False,
-                'tutorials': [{'title': item['title'],
-                               'description': item['description'],
-                               'url': item['repo_url']} 
-                               for item in user_tutorials]}
+                'tutorials': build_tutorials(user_entry)}
     return HttpResponse(json.dumps(response), content_type="application/json")
 
-def tutorial(request, username, tutname):
-    line = {}
-    line['number'] = 33
-    line['content'] = 'int i = 3;'
-    line['addition'] = True
-    line['deletion'] = False
+def build_tutorials(user):
+    user_tutorials = Tutorial.objects.filter(owner=user).values('title', 'description', 'repo_url').order_by('id').reverse()
+    return [{'title': item['title'],
+             'description': item['description'],
+             'url': item['repo_url']}
+            for item in user_tutorials]
 
-    file_res = {}
-    file_res['name'] = "assign.c"
-    file_res['lines'] = [line]
+def tutorial(request, username, tutnum):
+    tut_entry = Tutorial.objects.get(id=tutnum)
+    response = {'id': tutnum,
+                'title': tut_entry.title,
+                'description': tut_entry.description,
+                'repo_url': tut_entry.repo_url,
+                'is_editable': False,
+                'steps': build_steps(tut_entry) 
+               }
 
-    diff = {}
-    diff['diff_url'] = "http://www.google.com"
-    diff['code_url'] = "http://www.facebook.com"
-    diff['files'] = [file_res]
-
-    step = {}
-    step['title'] = 'step_title'
-    step['content_before'] = 'not too'
-    step['diff'] = diff
-    step['content_after'] = 'hard to see what this does'
-
-    response = {}
-    response['id'] = 543125
-    response['title'] = 'tutorial title'
-    response['description'] = 'shizzles mach nizzles'
-    response['repo_url'] = 'github.com/here/it/is'
-    response['is_editable'] = True
-    response['steps'] = [step]
-    
     return HttpResponse(json.dumps(response), content_type="application/json")
+
+def build_steps(tutorial):
+    return [{'title': item.title,
+             'content_before': item.content_before,
+             'content_after': item.content_after,
+             'commit': build_commit(item)
+            }
+            for item in Step.objects.filter(tutorial=tutorial).order_by('id')]
+
+def build_commit(step):
+    commit = Commit.objects.get(step=step)
+    return {'diff_url': commit.diff_url,
+            'code_url': commit.code_url,
+            'files': build_files(commit)}
+
+def build_files(commit):
+    commit_files = File.objects.filter(commit=commit).order_by('name')
+    return [{'name': item.name,
+             'lines': build_lines(item)} 
+            for item in commit_files]
+
+def build_lines(src_file):
+    file_lines = Line.objects.filter(src_file=src_file).order_by('number')
+    return [{'number': item.number,
+             'content': item.content,
+             'addition': item.addition,
+             'deletion': item.deletion} 
+             for item in file_lines]

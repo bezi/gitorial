@@ -35,7 +35,7 @@ If the person is the same as the person logged in, also add:
         ]
 ```
 
-/api/_user-name_/_tut-name_/
+/api/_user-name_/_tut-num_/
 ---
 GET:
 

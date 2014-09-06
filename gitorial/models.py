@@ -24,17 +24,17 @@ class Step(models.Model):
         return self.title
 
 class Commit(models.Model):
-    commit_url = models.CharField(max_length=100)
+    diff_url = models.CharField(max_length=100)
     code_url = models.CharField(max_length=100)
     step = models.OneToOneField(Step)
     def __str__(self):
-        return commit_url
+        return self.commit_url
 
 class File(models.Model):
     commit = models.ForeignKey(Commit)
     name = models.CharField(max_length=100)
     def __str__(self):
-        return name
+        return self.name
 
 class Line(models.Model):
     src_file = models.ForeignKey(File)
@@ -43,4 +43,4 @@ class Line(models.Model):
     addition = models.BooleanField(default=False)
     deletion = models.BooleanField(default=False)
     def __str__(self):
-        return content
+        return self.content
