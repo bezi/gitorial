@@ -106,6 +106,7 @@ STATICFILES_DIR = (os.path.join(BASE_DIR, 'assets'))
 # Use GitHub for logging in users
 AUTHENTICATION_BACKENDS = (
   'social.backends.github.GithubOAuth2',
+  'django.contrib.auth.backends.ModelBackend',
 )
 
 # Use social template context processors
@@ -123,3 +124,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   'social.apps.django_app.context_processors.backends',
   'social.apps.django_app.context_processors.login_redirect',
 )
+
+SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username']
+LOGIN_REDIRECT_URL = '/'

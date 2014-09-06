@@ -6,8 +6,24 @@ import json
 
 # Create your views here.
 def index(request):
+  print(request.user.username)
+  print(request.user.first_name)
+  print(request.user.last_name)
+  print(request.user.last_login)
+  print(request.user.email)
+  print(request.user.id)
+  print(request.user.pk)
+  print(type(request.user))
+  # I can't find an attribute for pictures.
+  # We can either get this manually (with the API itself),
+  # or I might be able to figure it out with python-social-auth
+
+  print('---')
+
+  print('\n'.join(dir(request.user)))
+
   return render_to_response('index.html', 
-      {}, 
+      {user: str(dir(request.user))}, 
       context_instance=RequestContext(request))
 
 def user(request, username):
