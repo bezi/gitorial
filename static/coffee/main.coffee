@@ -43,11 +43,63 @@ fakeTutorialData =
   }
   is_owner: true
   title: 'JavaScript Quirks'
+
   steps: [
     {
       title: 'Undefined vs null'
       content_before: 'Use null in your code'
       content_after: 'Undefined is used to show absence of value, not null values'
+      diff:
+        diff_url: 'https://github.com/bezi/gitorial/commit/e6952684c670180d667fed6e640ada148f197dba'
+        code_url: 'https://github.com/bezi/gitorial/tree/e6952684c670180d667fed6e640ada148f197dba'
+        files: [
+          {
+            name: 'static/coffee/main.coffee'
+            lines: [
+              {
+                number: 42
+                content: "     username: 'tomshen'"
+              }
+              {
+                number: 43
+                content: "     avatar_url: 'https://avatars0.githubusercontent.com/u/2065456?v=2&s=460'"
+                deletion: true
+              }
+              {
+                number: 44
+                content: "   }"
+              }
+              {
+                number: 45
+                content: "   is_owner: true"
+                addition: true
+              }
+            ]
+          }
+          {
+            name: 'static/coffee/main.coffee'
+            lines: [
+              {
+                number: 42
+                content: "     username: 'tomshen'"
+              }
+              {
+                number: 43
+                content: "     avatar_url: 'https://avatars0.githubusercontent.com/u/2065456?v=2&s=460'"
+                deletion: true
+              }
+              {
+                number: 44
+                content: "   }"
+              }
+              {
+                number: 45
+                content: "   is_owner: true"
+                addition: true
+              }
+            ]
+          }
+        ]
     }
     {
       title: '=== vs =='

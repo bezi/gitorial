@@ -207,3 +207,60 @@ input[type="text"], textarea {
   float: right;
   font-size: 4rem;
 }
+
+/* Code */
+.step-code {
+  border: 1px solid black;
+  margin: 1rem 0;
+  padding: 0.25rem 2.5% 0.5rem 2.5%;
+  width: 95%;
+}
+
+.step-code > :first-child {
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.step-code > :first-child > :first-child {
+  margin-right: 1rem;
+}
+
+.code-diff {
+  margin-bottom: 1rem;
+}
+
+.code-diff > header {
+  font-weight: 600;
+}
+
+.code-diff-lines {
+  list-style: none;
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.code-diff-lines > * {
+  overflow: auto;
+  width: 100%;
+}
+
+.code-diff-lines > * > code:first-child {
+  float: left;
+  width: 10%;
+}
+
+.code-diff-lines > * > code:last-child {
+  float: left;
+  width: 90%;
+}
+
+.addition > * {
+  background-color: #2ECC40;
+}
+.deletion > * {
+  background-color: #FF4136;
+}
+
+code {
+  font-size: 0.75rem;
+}

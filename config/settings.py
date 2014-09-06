@@ -12,6 +12,13 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+# TODO handle errors here
+try:
+  SOCIAL_AUTH_GITHUB_KEY = os.environ['SOCIAL_AUTH_GITHUB_KEY']
+  SOCIAL_AUTH_GITHUB_SECRET = os.environ['SOCIAL_AUTH_GITHUB_SECRET']
+except:
+  pass
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -36,6 +43,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # OAuth library
+    'social.apps.django_app.default',
+
+    # gitorial app
+    'gitorial',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -80,4 +93,27 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/assets/'
+STATIC_ROOT = 'assets'
+STATICFILES_DIR = (os.path.join(BASE_DIR, 'assets'))
+
+# Use GitHub for logging in users
+AUTHENTICATION_BACKENDS = (
+  'social.backends.github.GithubOAuth2',
+)
+
+# Use social template context processors
+TEMPLATE_CONTEXT_PROCESSORS = (
+  # Default setting for TEMPLATE_CONTEXT_PROCESSORS
+  'django.contrib.auth.context_processors.auth',
+  'django.core.context_processors.debug',
+  'django.core.context_processors.i18n',
+  'django.core.context_processors.media',
+  'django.core.context_processors.static',
+  'django.core.context_processors.tz',
+  'django.contrib.messages.context_processors.messages',
+
+  # Add social data to the template context
+  'social.apps.django_app.context_processors.backends',
+  'social.apps.django_app.context_processors.login_redirect',
+)
