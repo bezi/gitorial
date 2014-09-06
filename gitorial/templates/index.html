@@ -11,6 +11,13 @@
 </head>
 <body>
   <div id="container"></div>
+  <script id="not-found-template" type="text/x-handlebars-template">
+    <article class="not-found-page">
+      <header class="gitorial-header"><strong>git</strong>orial</header>
+      <img src="assets/imgs/panda.jpg" alt="Confused Panda">
+      <p>Page not found. <a href="#">Return to home page</a></p>
+    </article>
+  </script>
   <script id="home-template" type="text/x-handlebars-template">
     <article class="home-page">
       <header class="gitorial-header"><strong>git</strong>orial</header>
@@ -103,8 +110,8 @@
         <textarea class="step-content-before">{{content_before}}</textarea>
         <div class="step-code">
           <div>
-            <a href="{{diff.diff_url}}">View diff</a>
-            <a href="{{diff.code_url}}">View code</a>
+            <a href="{{commit.diff_url}}">View diff</a>
+            <a href="{{commit.code_url}}">View code</a>
           </div>
           {{#each diff.files}}
           <section class="code-diff">
@@ -154,8 +161,8 @@
         </div>
         <div class="step-code">
           <div>
-            <a href="{{diff.diff_url}}">View diff</a>
-            <a href="{{diff.code_url}}">View code</a>
+            <a href="{{commit.diff_url}}">View diff</a>
+            <a href="{{commit.code_url}}">View code</a>
           </div>
           {{#each diff.files}}
           <section class="code-diff">
