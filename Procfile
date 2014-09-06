@@ -1,1 +1,1 @@
-web: gunicorn config.wsgi --log-level debug --log-file -
+web: manage.py runserver 5000
