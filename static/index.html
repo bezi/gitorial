@@ -3,7 +3,7 @@
 <head>
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
   <title>Gitorial</title>
-  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600,700|Raleway:300,600">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700|Raleway:300,600">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css">
   <link rel=stylesheet href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="css/style.css">
@@ -100,7 +100,25 @@
       <section class="tutorial-step">
         <h1><input type="text" class="step-title" value="{{title}}"></h1>
         <textarea class="step-content-before">{{content_before}}</textarea>
-        <div class="step-code"></div>
+        <div class="step-code">
+          <div>
+            <a href="{{diff.diff_url}}">View diff</a>
+            <a href="{{diff.code_url}}">View code</a>
+          </div>
+          {{#each diff.files}}
+          <section class="code-diff">
+            <header>{{name}}:</header>
+            <ol class="code-diff-lines">
+            {{#each lines}}
+              <li class="{{#if addition}}addition{{/if}} {{#if deletion}}deletion{{/if}}">
+                <code>{{number}}</code>
+                <code>{{content}}</code>
+              </li>
+            {{/each}}
+            </ol>
+          </section>
+          {{/each}}
+        </div>
         <textarea class="step-content-after">{{content_after}}</textarea>
       </section>
       {{/each}}
@@ -133,7 +151,25 @@
         <div class="step-content-before">
           {{content_before}}
         </div>
-        <div class="step-code"></div>
+        <div class="step-code">
+          <div>
+            <a href="{{diff.diff_url}}">View diff</a>
+            <a href="{{diff.code_url}}">View code</a>
+          </div>
+          {{#each diff.files}}
+          <section class="code-diff">
+            <header>{{name}}:</header>
+            <ol class="code-diff-lines">
+            {{#each lines}}
+              <li class="{{#if addition}}addition{{/if}} {{#if deletion}}deletion{{/if}}">
+                <code>{{number}}</code>
+                <code>{{content}}</code>
+              </li>
+            {{/each}}
+            </ol>
+          </section>
+          {{/each}}
+        </div>
         <div class="step-content-after">
           {{content_after}}
         </div>
