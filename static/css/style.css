@@ -446,7 +446,7 @@ code {
     width: 200px;
   }
 
-  .tutorial-edit-button {
+  .tutorial-delete-button, .tutorial-edit-button {
     font-size: 2rem;
   }
 }
