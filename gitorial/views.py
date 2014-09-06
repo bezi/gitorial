@@ -1,8 +1,9 @@
+from django.core import serializers
 from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse
 from django.template import RequestContext
+from gitorial.models import User, Tutorial, Step, Commit, File, Line
 import django.contrib.auth
-
 import json
 
 # Create your views here.
@@ -37,31 +38,17 @@ def logout(request):
   return redirect('/')
 
 def user(request, username):
-    tutorial_a = {}
-    tutorial_a['title'] = 'Javascript Quirks'
-    tutorial_a['description'] = 'Super duper weird things about Javascript you should know.'
-    tutorial_a['url'] = '#/' + username + '/1'
-
-    tutorial_b = {}
-    tutorial_b['title'] = 'CSS Tricks'
-    tutorial_b['description'] = 'Handy dandy CSS tricks that you can use in your next website'
-    tutorial_b['url'] = '#/' + username + '/2'
-
-    repo_data = {}
-    repo_data['name'] = username + '/cmueats'
-    repo_data['description'] = 'It\'s for finding food!'
-    repo_data['url'] = 'github.com/' + username + '/cmueats'
-
-    response_data = {}
-    response_data['name'] = None
-    response_data['username'] = username
-    response_data['avatar_url'] = 'http://placekitten.com/400/400'
-    response_data['is_owner'] = True
-    response_data['tutorials'] = [tutorial_a, tutorial_b]
-    response_data['repos'] = [repo_data, repo_data, repo_data]
-
-    
-    return HttpResponse(json.dumps(response_data), content_type="application/json")
+    user_entry = User.objects.get(username=username.strip('/'))
+    user_tutorials = Tutorial.objects.filter(owner=user_entry).values('title', 'description', 'repo_url')
+    response = {'name': user_entry.name,
+                'username': user_entry.username,
+                'avatar_url': user_entry.avatar_url,
+                'is_owner': False,
+                'tutorials': [{'title': item['title'],
+                               'description': item['description'],
+                               'url': item['repo_url']} 
+                               for item in user_tutorials]}
+    return HttpResponse(json.dumps(response), content_type="application/json")
 
 def tutorial(request, username, tutname):
     line = {}
