@@ -14,7 +14,7 @@ def index(request):
 
 def session(request):
   if request.method == 'POST':
-    social.apps.django_app.views.auth(request)
+    social.apps.django_app.views.auth(request, 'github')
 
   elif request.method == 'GET':
     if(request.user is not None and
