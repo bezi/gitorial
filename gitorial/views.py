@@ -9,7 +9,7 @@ import json
 # Create your views here.
 def index(request):
   return render_to_response('index.html', 
-      {'gitorial_user': user}, 
+      {}, 
       context_instance=RequestContext(request))
 
 def session(request):
