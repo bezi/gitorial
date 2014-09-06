@@ -18,7 +18,10 @@ renderNotFound = (params) ->
 renderHome = (params) ->
   templateSource = $("#home-template").html()
   template = Handlebars.compile templateSource
-  $('#container').html template()
+  $('#container').html template({
+    username: 'profile'
+    is_logged_in: true
+  })
 
 fakeProfileData =
   name: 'Tom Shen'

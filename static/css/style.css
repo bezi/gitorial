@@ -101,7 +101,7 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
   width: 85%;
 }
-.sign-in-button:hover {
+.home-page > .button:hover {
   border-color: #0074D9;
   color: #0074D9;
   opacity: 1;

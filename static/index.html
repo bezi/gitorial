@@ -54,7 +54,11 @@
           </p>
         </li>
       </ol>
+      {{#if is_logged_in}}
+      <a href="#/{{username}}" class="button go-to-profile-button"><i class="fa fa-user"></i> Go to profile</a>
+      {{else}}
       <a href="#" class="button sign-in-button"><i class="contact-icon fa fa-github"></i> Sign in with GitHub</a>
+      {{/if}}
     </article>
   </script>
   <script id="profile-template" type="text/x-handlebars-template">
