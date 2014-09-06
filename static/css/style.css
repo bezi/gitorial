@@ -63,8 +63,8 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Home */
 .home-page {
-  margin-top: 2rem;
-  margin-bottom: 4rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
   text-align: center;
 }
 
