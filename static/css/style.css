@@ -60,12 +60,12 @@ a:hover {
   float: left;
   font-weight: bold;
   text-align: right;
-  width: 15%;
+  width: 10%;
 }
 .instructions > li > p {
   float: right;
   margin: 0;
-  width: 80%;
+  width: 85%;
 }
 
 .sign-in-button {
