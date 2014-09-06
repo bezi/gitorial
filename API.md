@@ -15,7 +15,8 @@ response = {
             description: 'Super duper cool tutorial'
             url: '#/view/bezi/tutorial'
         }
-        ]
+    ]
+}
 ```
 GET, POST, DELETE
 
@@ -43,27 +44,28 @@ response = {
     repo_url: 'github.com/here/it/is'
     is_editable: true // true if requested by owner
     steps: [
-    title: 'step_title'
-    content_before: 'not too'
-    commit: {
-        commit_url:
-        code_url:
-        
-        files [
-            {
-                name:
-                lines: [
-                    {
-                        number: 33
-                        content: "int i = 3;"
-                        addition: true/false
-                        deletion: true/false
-                    }]
-            }]
-            }
-    content_after: 'hard to see what this does'
+        title: 'step_title'
+        content_before: 'not too'
+        commit: {
+            commit_url:
+            code_url:
+            files: [
+                {
+                    name:
+                    lines: [
+                        {
+                            number: 33
+                            content: "int i = 3;"
+                            addition: true/false
+                            deletion: true/false
+                        }
+                    ]
+                }
+            ]
+        }
+        content_after: 'hard to see what this does'
     ]
-    }
+}
 ```
 
 POST:
