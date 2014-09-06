@@ -4,8 +4,18 @@ class User(models.Model):
     name = models.CharField(max_length=50)
     username = models.CharField(max_length=50, primary_key=True)
     avatar_url = models.CharField(max_length=100)
+    last_updated = models.DateTimeField(null=True)
+
+    def getDict(self):
+      return {
+          'name': user.name,
+          'username': user.username,
+          'avatar_url': user.avatar_url,
+          'last_updated': user.last_updated
+      }
+
     def __str__(self):
-        return self.name
+        return self.name + ' (' + self.username + ')'
 
 class Tutorial(models.Model):
     title = models.CharField(max_length=100)

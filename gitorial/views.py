@@ -1,11 +1,14 @@
 from django.core import serializers
 from django.shortcuts import render, render_to_response, redirect
-from django.http import HttpResponse, HttpResponseNotAllowed
+from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseForbidden,HttpResponseNotModified, HttpResponseNotFound
 from django.template import RequestContext
 from gitorial.models import User, Tutorial, Step, Commit, File, Line
 import django.contrib.auth
 import social.apps.django_app.views
 import json
+import requests
+from config import settings
+from datetime import datetime, timedelta
 
 # Create your views here.
 def index(request):
@@ -52,18 +55,88 @@ def session(request):
   else:
     return HttpResponseNotAllowed(['POST', 'GET', 'DELETE'])
 
-def user(request, username):
-    user_entry = User.objects.get(username=username.strip('/'))
-    user_tutorials = Tutorial.objects.filter(owner=user_entry).values('title', 'description', 'repo_url')
-    response = {'name': user_entry.name,
-                'username': user_entry.username,
-                'avatar_url': user_entry.avatar_url,
-                'is_owner': False,
-                'tutorials': [{'title': item['title'],
-                               'description': item['description'],
-                               'url': item['repo_url']} 
-                               for item in user_tutorials]}
-    return HttpResponse(json.dumps(response), content_type="application/json")
+def user_view(request, username):
+  if request.method =='POST':
+    user, is_new = User.objects.get_or_create(username=username)
+
+    if is_new:
+      api_r = requests.get('https://api.github.com/users/%s?client_id=%s&client_secret=%s' % (username, settings.SOCIAL_AUTH_GITHUB_KEY, settings.SOCIAL_AUTH_GITHUB_SECRET))
+
+      # Log how many requests are remaining
+      print(api_r.headers['X-RateLimit-Remaining'])
+
+      response_json = api_r.json()
+
+      try:
+        user.name = response_json['name']
+      except:
+        pass
+      user.avatar_url = response_json['avatar_url']
+      user.last_modified = datetime.now()
+      user.save()
+
+      return HttpResponse(status=201)
+    else:
+      return HttpResponseForbidden()
+
+  elif request.method =='GET':
+    try:
+      user = User.objects.get(username=username)
+
+      return HttpResponse(json.dumps({
+        'user': user.getDict()
+      }),
+      content_type="application/json")
+    except:
+      return HttpResponseNotFound()
+
+  elif request.method =='DELETE':
+    try:
+      User.objects.get(username=username).delete()
+      return HttpResponse()
+    except DoesNotExist:
+      return HttpResponseNotFound()
+
+  elif request.method =='PATCH':
+    try:
+      user = User.objects.get(username=username)
+
+      if (datetime.now() - user.last_modified) > timedelta(hours=1):
+        api_r = requests.get('https://api.github.com/users/%s?client_id=%s&client_secret=%s' % (username, settings.SOCIAL_AUTH_GITHUB_KEY, settings.SOCIAL_AUTH_GITHUB_SECRET))
+
+        # Log how many requests are remaining
+        print(api_r.headers['X-RateLimit-Remaining'])
+
+        response_json = api_r.json()
+
+        try:
+          user.name = response_json['name']
+        except:
+          pass
+        user.avatar_url = response_json['avatar_url']
+        user.last_modified = datetime.now()
+        user.save()
+
+        return HttpResponse()
+      else:
+        return HttpResponseNotModified()
+    except DoesNotExist:
+      return HttpResponseNotFound()
+
+  else:
+    return HttpResponseNotAllowed(['POST', 'GET', 'DELETE'])
+
+  user_entry = User.objects.get(username=username.strip('/'))
+  user_tutorials = Tutorial.objects.filter(owner=user_entry).values('title', 'description', 'repo_url')
+  response = {'name': user_entry.name,
+              'username': user_entry.username,
+              'avatar_url': user_entry.avatar_url,
+              'is_owner': False,
+              'tutorials': [{'title': item['title'],
+                             'description': item['description'],
+                             'url': item['repo_url']} 
+                             for item in user_tutorials]}
+  return HttpResponse(json.dumps(response), content_type="application/json")
 
 def tutorial(request, username, tutname):
     line = {}
