@@ -53,8 +53,17 @@
   </script>
   <script id="profile-template" type="text/x-handlebars-template">
     <article class="profile-page">
-      <header>{{name}}</header>
-      <img src="{{avatar_url}}" class="avatar">
+      <section class="user-info">
+        <header class="gitorial-header"><strong>git</strong>orial</header>
+        <img src="{{avatar_url}}" class="avatar">
+        <a href="https://github.com/{{username}}" class="user-name">
+        {{#if name}}
+          {{name}}
+        {{else}}
+          {{username}}
+        {{/if}}
+        </a>
+      </section>
       <section class="tutorials">
         <header>Tutorials</header>
         {{#if is_current_user}}
@@ -62,8 +71,11 @@
         {{/if}}
         <ul>
         {{#each tutorials}}
-          <li>
-            <a href="{{url}}">{{name}}</a>
+          <li class="tutorial-listing">
+            <a href="{{url}}" class="tutorial-listing-title">{{title}}</a>
+            <p class="tutorial-listing-description">
+              {{description}}
+            </p>
           </li>
         {{/each}}
         </ul>

@@ -15,15 +15,48 @@ renderHome = (params) ->
 
 fakeProfileData =
   name: 'Tom Shen'
+  username: 'tomshen'
   avatar_url: 'https://avatars0.githubusercontent.com/u/2065456?v=2&s=460'
   if_current_url: true
   tutorials: [
     {
-      name: 'JavaScript Quirks'
+      title: 'JavaScript Quirks'
+      description: 'Super duper weird things about JavaScript you should know'
       url: '#/view/javascriptquirks'
     }
     {
-      name: 'CSS Tricks'
+      title: 'CSS Tricks'
+      description: 'Handy dandy CSS tricks that you can use in your next website'
+      url: '#/view/csstricks'
+    }
+    {
+      title: 'JavaScript Quirks'
+      description: 'Super duper weird things about JavaScript you should know'
+      url: '#/view/javascriptquirks'
+    }
+    {
+      title: 'CSS Tricks'
+      description: 'Handy dandy CSS tricks that you can use in your next website'
+      url: '#/view/csstricks'
+    }
+    {
+      title: 'JavaScript Quirks'
+      description: 'Super duper weird things about JavaScript you should know'
+      url: '#/view/javascriptquirks'
+    }
+    {
+      title: 'CSS Tricks'
+      description: 'Handy dandy CSS tricks that you can use in your next website'
+      url: '#/view/csstricks'
+    }
+    {
+      title: 'JavaScript Quirks'
+      description: 'Super duper weird things about JavaScript you should know'
+      url: '#/view/javascriptquirks'
+    }
+    {
+      title: 'CSS Tricks'
+      description: 'Handy dandy CSS tricks that you can use in your next website'
       url: '#/view/csstricks'
     }
   ]
