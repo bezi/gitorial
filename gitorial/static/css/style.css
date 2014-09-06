@@ -1,0 +1,410 @@
+/* General */
+html {
+  background-color: #F8F8F8;
+  color: #222;
+  font: 20px 'Source Sans Pro', sans-serif;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  height: 100%;
+}
+
+a {
+  border-bottom: 0.1rem solid;
+  color: #444;
+  text-decoration: none;
+}
+a:hover {
+  color: #FF4136;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+}
+
+.gitorial-header {
+  color: #444;
+  font-family: Raleway, sans-serif
+  font-weight: 300;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.gitorial-header > strong {
+  color: #FF4136;
+  font-weight: 600;
+}
+
+.button {
+  border: 0.15rem solid #333;
+  border-radius: 1rem;
+  moz-border-radius: 1rem;
+  -webkit-border-radius: 1rem;
+  color: black;
+  font-weight: 600;
+  padding: 0.5rem;
+}
+.button:hover {
+  color: inherit;
+  opacity: 0.7;
+}
+
+#container {
+  margin: 0 auto;
+  max-width: 800px;
+  min-height: 100%;
+}
+
+/* Home */
+.home-page {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  text-align: center;
+}
+
+.home-page > header {
+  font-size: 6rem;
+}
+
+.home-page > p {
+  font-size: 1.5rem;
+}
+
+.instructions {
+  list-style: none;
+  margin: 1rem 0 3rem 0;
+  overflow: auto;
+  padding: 0;
+  text-align: left;
+}
+.instructions > li {
+  height: 100%;
+  padding: 0.5rem 0;
+  overflow: auto;
+}
+.instruction-label {
+  float: left;
+  font-weight: bold;
+  text-align: right;
+  width: 10%;
+}
+.instructions > li > p {
+  float: right;
+  margin: 0;
+  width: 85%;
+}
+
+/* Profile */
+.profile-page {
+  position: relative;
+}
+
+.user-info {
+  background-color: #DDD;
+  float: left;
+  height: 100%;
+  padding: 0 0.25rem;
+  position: fixed;
+  text-align: center;
+  width: 250px;
+}
+.user-info > header {
+  font-size: 3.8rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.user-name {
+  border: none;
+  color: black;
+  font-size: 2rem;
+}
+.avatar {
+  display: block;
+  margin: 0 auto;
+  width: 200px;
+}
+.new-tutorial-button {
+  display: block;
+  font-size: 0.8rem;
+  margin: 1rem auto;
+  padding: 0.25rem;
+  width: 75%;
+}
+
+.tutorials {
+  float: right;
+  width: 65%;
+}
+.tutorials > header {
+  background-color: #F8F8F8;
+  font-size: 4rem;
+  font-weight: 500;
+  padding-bottom: 1rem;
+  position: fixed;
+  width: 100%;
+}
+.tutorials > ul {
+  list-style: none;
+  margin: 6rem 0 1rem 0;
+  padding: 0;
+}
+.tutorial-listing {
+  display: block;
+}
+.tutorial-listing-title {
+  color: #111;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Edit & View */
+.edit-page, .view-page {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.tutorial-header {
+  display: inline-block;
+  width: 100%;
+}
+
+.tutorial-header > .gitorial-header {
+  float: left;
+  font-size: 3rem;
+}
+
+.tutorial-header > span:last-child {
+  display: inline-block;
+  float: right;
+  margin: 1rem 0 1rem 0;
+  text-align: right;
+}
+
+.tutorial-header > span:last-child > .user-name {
+  font-size: 1.5rem;
+}
+
+.tutorial-title {
+  font-size: 4rem;
+  font-weight: bold;
+}
+
+/* Edit */
+textarea {
+  background-color: #F4F4F4;
+  border: 0.05rem dashed #BBB;
+  width: 100%;
+}
+
+.tutorial-generate-button {
+  display: block;
+  font-size: 2rem;
+  margin: 2rem auto;
+  text-align: center;
+  width: 300px;
+}
+
+/* View */
+.tutorial-edit-button {
+  border: none;
+  float: right;
+  font-size: 4rem;
+}
+
+/* Code */
+.step-code {
+  border: 0.05rem solid black;
+  margin: 1rem 0;
+  padding: 0.25rem 2.5% 0.5rem 2.5%;
+  width: 95%;
+}
+
+.step-code > :first-child {
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.step-code > :first-child > :first-child {
+  margin-right: 1rem;
+}
+
+.code-diff {
+  margin-bottom: 1rem;
+}
+
+.code-diff > header {
+  font-weight: 600;
+}
+
+.code-diff-lines {
+  list-style: none;
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.code-diff-lines > * {
+  overflow: auto;
+  width: 100%;
+}
+
+.code-diff-lines > * > code:first-child {
+  float: left;
+  width: 10%;
+}
+
+.code-diff-lines > * > code:last-child {
+  float: left;
+  width: 90%;
+}
+
+.addition > * {
+  background-color: #2ECC40;
+}
+.deletion > * {
+  background-color: #FF4136;
+}
+
+code {
+  font-size: 0.75rem;
+}
+
+@media(max-width: 800px) {
+  html {
+    font-size: 18px;
+  }
+  body {
+    margin: 0 1rem;
+  }
+
+  /* Home */
+  .instruction-label {
+    float: none;
+    font-size: 2rem;
+    text-align: left;
+    width: inherit;
+  }
+  .instructions > li > p {
+    float: none;
+    margin: 0;
+    text-align: left;
+    width: inherit;
+  }
+
+  /* Profile */
+  .profile-page {
+    position: relative;
+  }
+
+  .user-info {
+    background-color: inherit;
+    float: none;
+    padding: 0;
+    position: inherit;
+    text-align: center;
+    width: inherit;
+  }
+  .user-info > header {
+    font-size: 6rem;
+    margin: 2rem 0 1rem 0;
+    text-align: center;
+  }
+  .user-name {
+    border: none;
+    color: black;
+    font-size: 3rem;
+  }
+  .avatar {
+    display: block;
+    margin: 0 auto;
+    width: 300px;
+  }
+  .new-tutorial-button {
+    display: block;
+    font-size: 1.5rem;
+    margin: 1rem auto;
+    padding: 0.5rem;
+    width: 300px;
+  }
+
+  .tutorials {
+    float: none;
+    margin-bottom: 2rem;
+    width: inherit;
+  }
+  .tutorials > header {
+    font-size: 4rem;
+    font-weight: 500;
+    position: inherit;
+    width: 100%;
+  }
+  .tutorials > ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .tutorial-listing {
+    display: block;
+  }
+  .tutorial-listing-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .tutorial-title {
+    font-size: 3rem;
+  }
+
+  .tutorial-edit-button {
+    font-size: 3rem;
+  }
+}
+
+@media(max-width: 400px) {
+  .home-page > header {
+    font-size: 4rem;
+  }
+
+  .home-page > p {
+    font-size: 1.25rem;
+  }
+
+  .user-info > header {
+    font-size: 4rem;
+  }
+
+  .avatar {
+    width: 80%;
+  }
+
+  .new-tutorial-button {
+    font-size: 1rem;
+    width: 80%;
+  }
+
+  .tutorials > header {
+    font-size: 3rem;
+  }
+
+  .tutorial-title {
+    font-size: 2rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .tutorial-generate-button {
+    font-size: 1rem;
+    width: 200px;
+  }
+
+  .tutorial-edit-button {
+    font-size: 2rem;
+  }
+}
