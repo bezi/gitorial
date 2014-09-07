@@ -1,7 +1,5 @@
 from django.db import models
 
-from jsonfield import JSONField
-
 class User(models.Model):
     name = models.CharField(max_length=50)
     username = models.CharField(max_length=50, primary_key=True)
@@ -37,7 +35,7 @@ class Step(models.Model):
     diff_url = models.CharField(max_length=250)
     code_url = models.CharField(max_length=250)
 
-    files = JSONField()
+    files = models.TextField()
 
     tutorial = models.ForeignKey(Tutorial)
     def __str__(self):
