@@ -1,5 +1,7 @@
 from django.db import models
 
+from jsonfield import JSONField
+
 class User(models.Model):
     name = models.CharField(max_length=50)
     username = models.CharField(max_length=50, primary_key=True)
@@ -37,20 +39,6 @@ class Commit(models.Model):
     diff_url = models.CharField(max_length=100)
     code_url = models.CharField(max_length=100)
     step = models.OneToOneField(Step)
+    files = JSONField()
     def __str__(self):
         return self.commit_url
-
-class File(models.Model):
-    commit = models.ForeignKey(Commit)
-    name = models.CharField(max_length=100)
-    def __str__(self):
-        return self.name
-
-class Line(models.Model):
-    src_file = models.ForeignKey(File)
-    number = models.IntegerField()
-    content = models.CharField(max_length=200)
-    addition = models.BooleanField(default=False)
-    deletion = models.BooleanField(default=False)
-    def __str__(self):
-        return self.content

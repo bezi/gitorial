@@ -2,7 +2,7 @@ from django.core import serializers
 from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseForbidden,HttpResponseNotModified, HttpResponseNotFound
 from django.template import RequestContext
-from gitorial.models import User, Tutorial, Step, Commit, File, Line
+from gitorial.models import User, Tutorial, Step, Commit
 import django.contrib.auth
 import social.apps.django_app.views
 import json
@@ -10,9 +10,11 @@ import requests
 from config import settings
 from datetime import datetime, timedelta
 
+import diff
+
 # Create your views here.
 def index(request):
-  return render_to_response('index.html', {}, 
+  return render_to_response('index.html', {},
       context_instance=RequestContext(request))
 
 def logout(request):
@@ -111,34 +113,36 @@ def build_tutorials(user):
            'url': item['repo_url']}
           for item in user_tutorials]
 
+def build_steps(username, repo_name, tutorial, commits_data):
+    steps = []
+    for commit_data in commits_data:
+        step, is_new = Step.objects.get_or_create(tutorial=tutorial)
+        if is_new:
+            step.title = commit_data['title']
+            step.content_before = commit_data['message']
+            step.content_after = ''
+            step.commit = build_commit(username, repo_name, commit_data)
+            step.save()
+        steps.append(step)
+    return steps
 
-def build_steps(tutorial):
-  return [{'title': item.title,
-           'content_before': item.content_before,
-           'content_after': item.content_after,
-           'commit': build_commit(item)
-          }
-          for item in Step.objects.filter(tutorial=tutorial).order_by('id')]
-
-def build_commit(step):
-  commit = Commit.objects.get(step=step)
-  return {'diff_url': commit.diff_url,
-          'code_url': commit.code_url,
-          'files': build_files(commit)}
-
-def build_files(commit):
-  commit_files = File.objects.filter(commit=commit).order_by('name')
-  return [{'name': item.name,
-           'lines': build_lines(item)} 
-          for item in commit_files]
-
-def build_lines(src_file):
-  file_lines = Line.objects.filter(src_file=src_file).order_by('number')
-  return [{'number': item.number,
-           'content': item.content,
-           'addition': item.addition,
-           'deletion': item.deletion} 
-           for item in file_lines]
+def build_commit(username, repo_name, commit_data):
+    commit, is_new = Commit.objects.get_or_create(step=commit_data['step'])
+    if is_new:
+        commit.diff_url = commit_data['diff_url']
+        commit.code_url = commit_data['code_url']
+        api_r = requests.get(
+            'https://api.github.com/users/%s/%s/commits/%s?client_id=%s&client_secret=%s' % (
+                username,
+                repo_name,
+                commit_data['sha'],
+                settings.SOCIAL_AUTH_GITHUB_KEY,
+                settings.SOCIAL_AUTH_GITHUB_SECRET
+            ))
+        print(api_r.headers['X-RateLimit-Remaining'])
+        commit.files = diff.parse(api_r.text)
+        commit.save()
+    return commit
 
 def tutorial_new(request, username, repo):
   if request.method == 'POST':

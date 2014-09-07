@@ -15,10 +15,13 @@ gitorial.session =
                 'x-csrftoken' : $.cookie 'csrftoken'
         .done (data) ->
             gitorial.session.username = data.username
+            gitorial.session.loggedin = data.username isnt ""
             return
         .fail gitorial.routes.fail
+        return
         
     username: null
+    loggedin: false
 
 # Templating
 gitorial.templates =
@@ -30,6 +33,14 @@ gitorial.templates =
 
 # Routing
 gitorial.routes = 
+    home: ->
+        data =
+            gitorial: gitorial
+        $('#container').html gitorial.templates.home data
+        return
+
+    tutorialPane: true
+
     profile: (params) ->
         address = '/api/' + params[0] + '/'
         $.ajax
@@ -39,16 +50,20 @@ gitorial.routes =
             headers: 
                 'x-csrftoken' : $.cookie 'csrftoken'
         .done (data) ->
-            $('#container').html gitorial.templates.profile(data) 
-        .fail ->
-            $.ajax
-                dataType: 'json'
-                url: address
-                headers: 
-                    'x-csrftoken' : $.cookie 'csrftoken'
-                type: 'POST'
-            .done gitorial.router
-            .fail gitorial.fail
+            data.isowner = gitorial.session.username is params[0]
+            data.tutorialPane = gitorial.routes.tutorialPane
+            data.reposPane = not data.tutorialPane
+            data.gitorial = gitorial
+            data.avatar_url = 'assets/imgs/panda.jpg'
+            $('#container').html gitorial.templates.profile data 
+            $ '.new-tutorial-button'
+            .on 'click', (e) ->
+                gitorial.routes.tutorialPane = not gitorial.routes.tutorialPane
+                gitorial.router();
+                return
+            return
+        .fail gitorial.routes.fail
+        return
 
     edit: (params) ->
         address = '/api/' + params[0] + '/' + params[1] + '/'
@@ -59,10 +74,13 @@ gitorial.routes =
                 'x-csrftoken' : $.cookie 'csrftoken'
             type: 'GET'
         .done (data) ->
-            $('#container').html gitorial.templates.edit(data) 
+            data.isowner = gitorial.session.username is params[0]
+            data.gitorial = gitorial
+            $('#container').html gitorial.templates.edit data 
+            return
         .fail gitorial.routes.fail
+        return
             
-
     view: (params) ->
         address = '/api/' + params[0] + '/' + params[1] + '/'
         $.ajax
@@ -72,14 +90,17 @@ gitorial.routes =
                 'x-csrftoken' : $.cookie 'csrftoken'
             type: 'GET'
         .done (data) ->
-            $('#container').html gitorial.templates.view(data) 
+            data.isowner = gitorial.session.username is params[0]
+            data.gitorial = gitorial
+            $('#container').html gitorial.templates.view data
+                
+            return
         .fail gitorial.routes.fail
-
-    home: ->
-        $('#container').html gitorial.templates.home()
+        return
 
     fail: ->
         $('#container').html gitorial.templates.fail()
+        return
 
 gitorial.router = ->
     gitorial.session.update()
@@ -93,6 +114,7 @@ gitorial.router = ->
         gitorial.routes.profile [username]
     else 
         gitorial.routes.home()
+    return
 
 # call router
 gitorial.router()
