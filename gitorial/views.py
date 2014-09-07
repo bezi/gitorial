@@ -184,14 +184,14 @@ def tutorial_new(request, username, repo):
 
                 commits_data = []
                 for commit in commits_r_json:
-                    (title_raw, _, message_raw) = commit.message.partition('\n')[0][:50]
+                    (title_raw, _, message_raw) = commit['message'].partition('\n')
 
                     results.append({
-                        'sha': commit.sha,
+                        'sha': commit['sha'],
                         'title': title_raw[:50],
                         'message': message_raw,
-                        'diff_url': commit.html_url,
-                        'code_url': 'https://github.com/%s/%s/tree/%s' % (username, repo, commit.sha)
+                        'diff_url': commit['html_url'],
+                        'code_url': 'https://github.com/%s/%s/tree/%s' % (username, repo, commit['sha'])
                     })
 
                 commits_data.sort(reverse=True)
