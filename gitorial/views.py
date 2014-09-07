@@ -21,6 +21,14 @@ def logout(request):
     django.contrib.auth.logout(request)
     return redirect('/')
 
+def callback(request):
+    if(request.user is not None and
+         request.user.is_authenticated()):
+        return redirect('/#/' + request.user.username)
+    else:
+        return redirect('/')
+    return
+
 def session(request):
     if request.method == 'GET':
         if(request.user is not None and

@@ -8,6 +8,7 @@ urlpatterns = patterns('',
 
     # login/logout
     url(r'logout/', 'gitorial.views.logout', name='logout'),
+    url(r'callback/', 'gitorial.views.callback', name='callback'),
 
     # get session
     url(r'api/session/', 'gitorial.views.session', name='session'),
