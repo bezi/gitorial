@@ -134,6 +134,7 @@
   gitorial.tutorials = {
     handleClick: function(e) {
       var reponame, user;
+      e.preventDefault();
       if (!gitorial.routes.tutorialPane) {
         reponame = e.target.innerHTML;
         user = gitorial.session.username;
@@ -156,7 +157,7 @@
         $.ajax({
           dataType: 'json',
           url: '/api/' + user + '/' + reponame + '/',
-          type: 'GET',
+          type: 'POST',
           headers: {
             'x-csrftoken': $.cookie('csrftoken')
           }
