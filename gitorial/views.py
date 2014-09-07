@@ -239,7 +239,9 @@ def tutorial(request, username, tutnum):
 
         return JsonResponse(response)
     elif request.method == 'DELETE':
-        return HttpResponse(status="501")
+        # tut is an ID (number)
+        Tutorial.objects.get(id=tutnum).delete()
+        return HttpResponse()
     elif request.method == 'PATCH':
         return HttpResponse(status="501")
     else:
