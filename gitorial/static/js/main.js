@@ -144,7 +144,7 @@
         }
       }).done(function(data) {
         var location, url;
-        url = '/#/' + user + '/' + data.url + '/edit';
+        url = '/#/' + user + '/' + data.tutorial_id + '/edit';
         location = url;
         gitorial.router();
       }).fail(gitorial.routes.fail);

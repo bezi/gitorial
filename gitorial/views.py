@@ -138,13 +138,22 @@ def build_steps(username, repo_name, tutorial, commits_data):
             step.title = commit_data['title']
             step.content_before = commit_data['message']
             step.content_after = ''
-            step.commit = build_commit(username, repo_name, commit_data)
+            step.commit = build_commit(username, repo_name, commit_data, step)
             step.save()
-        steps.append(step)
+        steps.append({
+            "title": step.title,
+            "content_before": step.content_before,
+            "content_after": step.content_after,
+            "commit": {
+                    "commit_url": step.commit.diff_url,
+                    "code_url": step.commit.code_url,
+                    "files": step.commit.files
+                }
+            });
     return steps
 
-def build_commit(username, repo_name, commit_data):
-    commit, is_new = Commit.objects.get_or_create(step=commit_data['step'])
+def build_commit(username, repo_name, commit_data, step):
+    commit, is_new = Commit.objects.get_or_create(step=step)
     if is_new:
         commit.diff_url = commit_data['diff_url']
         commit.code_url = commit_data['code_url']
@@ -169,38 +178,33 @@ def tutorial_new(request, username, repo):
         repo_r_json = repo_r.json()
 
         tut_entry, is_new = Tutorial.objects.get_or_create(id=repo_r_json['id'], owner = user)
-        if not is_new:
-            return HttpResponseForbidden()
-        else:
-            tut_entry.name = repo_r_json['name']
-            tut_entry.description = repo_r_json['description']
-            tut_entry.repo_url = repo_r_json['url']
-            tut_entry.owner = user
-            tut_entry.save()
+        tut_entry.name = repo_r_json['name']
+        tut_entry.description = repo_r_json['description']
+        tut_entry.repo_url = repo_r_json['url']
+        tut_entry.owner = user
+        tut_entry.save()
 
-            commits_r = requests.get(repo_r_json['commits_url'].replace('{/sha}', '') + ('?client_id=%s&client_secret=%s' % (settings.SOCIAL_AUTH_GITHUB_KEY, settings.SOCIAL_AUTH_GITHUB_SECRET)))
-            commits_r_json = commits_r.json()
+        commits_r = requests.get(repo_r_json['commits_url'].replace('{/sha}', '') + ('?client_id=%s&client_secret=%s' % (settings.SOCIAL_AUTH_GITHUB_KEY, settings.SOCIAL_AUTH_GITHUB_SECRET)))
+        commits_r_json = commits_r.json()
 
-            commits_data = []
-            for commit in commits_r_json:
-                (title_raw, _, message_raw) = commit['message'].partition('\n')
+        commits_data = []
+        for commit in commits_r_json:
+            (title_raw, _, message_raw) = commit['commit']['message'].partition('\n')
 
-                results.append({
-                    'sha': commit['sha'],
-                    'title': title_raw[:50],
-                    'message': message_raw,
-                    'diff_url': commit['html_url'],
-                    'code_url': 'https://github.com/%s/%s/tree/%s' % (username, repo, commit['sha'])
-                })
+            commits_data.insert(0, {
+                'sha': commit['sha'],
+                'title': title_raw[:50],
+                'message': message_raw,
+                'diff_url': commit['html_url'],
+                'code_url': 'https://github.com/%s/%s/tree/%s' % (username, repo, commit['sha'])
+            })
 
-            commits_data.sort(reverse=True)
+        build_steps(username, repo, tut_entry, commits_data)
 
-            build_steps(username, repo, tut_entry, commits_data)
-
-            return HttpResponse(json.dumps({
-                'tutorial_id': tut_entry.id
-                }),
-                content_type="application/json")
+        return HttpResponse(json.dumps({
+            'tutorial_id': tut_entry.id
+            }),
+            content_type="application/json")
     else:
         return HttpResponseNotAllowed(['POST'])
 
@@ -208,12 +212,13 @@ def tutorial(request, username, tutnum):
     if request.method == 'GET':
         # tut is an ID (number)
         tut_entry = Tutorial.objects.get(id=tutnum)
-        response = {'id': tutnum,
-                                'title': tut_entry.title,
-                                'description': tut_entry.description,
-                                'repo_url': tut_entry.repo_url,
-                                'steps': build_steps(tut_entry)
-                             }
+        response = {
+                'id': tutnum,
+                'title': tut_entry.title,
+                'description': tut_entry.description,
+                'repo_url': tut_entry.repo_url,
+                'steps': build_steps(tut_entry)
+        }
 
         return HttpResponse(json.dumps(response), content_type="application/json")
     elif request.method == 'DELETE':

@@ -47,6 +47,7 @@ response = {
     steps: [
         title: 'step_title'
         content_before: 'not too'
+        content_after: 'hard to see what this does'
         commit: {
             commit_url:
             code_url:
@@ -67,7 +68,6 @@ response = {
                 }
             ]
         }
-        content_after: 'hard to see what this does'
     ]
 }
 ```
