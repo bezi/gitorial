@@ -2,7 +2,7 @@
 html {
   background-color: #F8F8F8;
   color: #222;
-  font: 20px 'Source Sans Pro', sans-serif;
+  font: 20px 'Open Sans', 'Source Sans Pro', sans-serif;
   height: 100%;
   width: 100%;
 }
@@ -27,7 +27,7 @@ h1, h2, h3, h4, h5, h6 {
 .gitorial-header {
   border: none;
   color: #444;
-  font-family: Raleway, sans-serif
+  font-family: 'Source Sans Pro', sans-serif;
   font-weight: 300;
 
   -webkit-touch-callout: none;
@@ -171,8 +171,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 .user-listings > header {
   background-color: #F8F8F8;
-  font-size: 4rem;
-  font-weight: 500;
+  font-size: 3.5rem;
+  font-weight: 600;
   padding-bottom: 1rem;
   position: fixed;
   width: 100%;
@@ -225,8 +225,8 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Edit */
 textarea {
-  background-color: #F4F4F4;
-  border: 0.05rem dashed #BBB;
+  background-color: #F8F8F8;
+  border: 1px dashed #BBB;
   width: 100%;
 }
 textarea.tutorial-title {
@@ -250,7 +250,7 @@ textarea.tutorial-title {
   font-size: 2rem;
   margin: 2rem auto;
   text-align: center;
-  width: 300px;
+  width: 350px;
 }
 .tutorial-generate-button:hover {
   color: #0074D9;
@@ -327,7 +327,7 @@ textarea.tutorial-title {
 }
 
 code {
-  font-size: 0.75rem;
+  font: 0.8rem Inconsolata, Monaco, monospace;
 }
 
 @media(max-width: 800px) {
@@ -395,7 +395,7 @@ code {
   }
   .user-listings > header {
     font-size: 4rem;
-    font-weight: 500;
+    font-weight: 600;
     position: inherit;
     width: 100%;
   }
