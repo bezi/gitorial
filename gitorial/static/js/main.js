@@ -59,7 +59,7 @@
           gitorial.session.update();
         });
         $('.user-listing-title').on('click', function(e) {
-          gitorial.tutorials.utils.handleClick(e);
+          gitorial.tutorials.handleClick(e);
         });
         return $('#');
       }).fail(function() {
@@ -131,7 +131,7 @@
 
   gitorial.tutorials = {};
 
-  gitorial.tutorials.utils = {
+  gitorial.tutorials = {
     handleClick: function(e) {
       var reponame, user;
       if (!gitorial.routes.tutorialPane) {
@@ -171,6 +171,8 @@
   };
 
   gitorial.tutorials.data = null;
+
+  gitorial.save = function() {};
 
   gitorial.session.update();
 

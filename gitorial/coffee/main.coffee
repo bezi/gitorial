@@ -65,7 +65,7 @@ gitorial.routes =
 
             $ '.user-listing-title'
             .on 'click', (e) -> 
-                gitorial.tutorials.utils.handleClick(e)
+                gitorial.tutorials.handleClick(e)
                 return
 
             $ '#'
@@ -137,7 +137,7 @@ gitorial.router = ->
 
 # Tutorial generator utilities
 gitorial.tutorials = {}
-gitorial.tutorials.utils =
+gitorial.tutorials =
     handleClick: (e) ->
         if not gitorial.routes.tutorialPane
             reponame = e.target.innerHTML
@@ -170,8 +170,26 @@ gitorial.tutorials.utils =
                 return
             .fail gitorial.routes.fail
         return
+    data: null
 
-gitorial.tutorials.data = null
+    save: ->
+        # iterate over the ui, save into JSON
+        saveData = 
+            title: $(".tutorial-title").val()
+            steps: $(".tutorial-step")
+        
+        $.ajax
+            dataType: 'json'
+            url: '/api/' + gitorial.session.username + '/' + gitorial.session.tutorial_id + '/'
+            type: 'POST'
+            data: gitorial.tutorials.data
+        .done (data) ->
+            console.log "Saved."
+            return
+        .fail
+            console.log "Unable to save."
+            return
+        return
     
 # call router
 gitorial.session.update()
