@@ -213,7 +213,7 @@ def tutorial_new(request, username, repo):
 
         return JsonResponse({'tutorial_id': tut_entry.id}) 
     else:
-        return HttpResponseNotAllowed(['POST'])
+        return HttpResponseNotAllowed(['POST','GET','DELETE','PATCH'])
 
 def tutorial(request, username, tutnum):
     if request.method == 'GET':
@@ -262,5 +262,5 @@ def tutorial(request, username, tutnum):
         except Tutorial.DoesNotExist:
             return HttpResponseNotFound()
     else:
-        return HttpResponseNotAllowed(['POST','GET'])
+        return HttpResponseNotAllowed(['POST','GET','DELETE','PATCH'])
 
