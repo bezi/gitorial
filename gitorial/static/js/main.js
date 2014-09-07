@@ -57,7 +57,9 @@
           gitorial.routes.tutorialPane = !gitorial.routes.tutorialPane;
           gitorial.router();
         });
-        return $('.user-listing-title').on('click', function(e) {
+        return $('.user-listing-title').on('hover', function(e) {
+          return $(this).text += ' +';
+        }).on('click', function(e) {
           gitorial.tutorials.utils.makeNew(e);
         });
       }).fail(function() {
