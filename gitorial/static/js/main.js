@@ -7,7 +7,6 @@
       $.ajax({
         dataType: 'json',
         type: 'GET',
-        async: false,
         url: '/api/session/',
         headers: {
           'x-csrftoken': $.cookie('csrftoken')
@@ -88,6 +87,8 @@
         data.isowner = gitorial.session.username === params[0];
         data.gitorial = gitorial;
         $('#container').html(gitorial.templates.edit(data));
+        gitorial.tutorials.data = data;
+        $('textarea').autosize();
       }).fail(gitorial.routes.fail);
     },
     view: function(params) {
@@ -137,7 +138,6 @@
       $.ajax({
         dataType: 'json',
         url: '/api/' + user + '/' + reponame + '/',
-        async: false,
         type: 'POST',
         headers: {
           'x-csrftoken': $.cookie('csrftoken')
@@ -145,11 +145,12 @@
       }).done(function(data) {
         var url;
         url = '/#/' + user + '/' + data.tutorial_id + '/edit';
-        console.log("WE GOING TO ", url);
-        window.location.href = url;
+        location.href = url;
       }).fail(gitorial.routes.fail);
     }
   };
+
+  gitorial.tutorials.data = null;
 
   gitorial.router();
 
