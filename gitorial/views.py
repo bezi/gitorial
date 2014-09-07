@@ -85,7 +85,7 @@ def user_view(request, username):
             print(e)
             return HttpResponseNotFound()
 
-    elif request.method =='DELETE':
+    elif request.method == 'DELETE':
         try:
             User.objects.get(username=username).delete()
             return HttpResponse()
@@ -93,7 +93,7 @@ def user_view(request, username):
             print(e)
             return HttpResponseNotFound()
 
-    elif request.method =='PATCH':
+    elif request.method == 'PATCH':
         try:
             user = User.objects.get(username=username)
 
