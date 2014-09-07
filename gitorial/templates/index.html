@@ -119,10 +119,10 @@
         {{#if gitorial.session.loggedin}}
             <span>
               <a href="#/profile/{{gitorial.session.username}}" class="user-name">
-              {{#if user.name}}
-                {{user.name}}
+              {{#if gitorial.session.name}}
+                {{gitorial.session.name}}
               {{else}}
-                {{user.username}}
+                {{gitorial.session.username}}
               {{/if}}
               </a>
             </span>

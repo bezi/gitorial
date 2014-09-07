@@ -174,10 +174,6 @@ gitorial.tutorials =
 
     save: ->
         # iterate over the ui, save into JSON
-        saveData = 
-            title: $(".tutorial-title").val()
-            steps: $(".tutorial-step")
-        
         $.ajax
             dataType: 'json'
             url: '/api/' + gitorial.session.username + '/' + gitorial.session.tutorial_id + '/'
@@ -186,7 +182,7 @@ gitorial.tutorials =
         .done (data) ->
             console.log "Saved."
             return
-        .fail
+        .fail ->
             console.log "Unable to save."
             return
         return
