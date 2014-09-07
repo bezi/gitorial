@@ -43,6 +43,7 @@ response = {
     id: 21341234134
     title: 'tutorial title'
     description: 'shizzles mah nizzles'
+    repo_name: 'jquery-lab'
     repo_url: 'github.com/here/it/is'
     steps: [
         title: 'step_title'

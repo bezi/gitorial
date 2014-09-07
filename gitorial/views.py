@@ -1,6 +1,6 @@
 from django.core import serializers
 from django.shortcuts import render, render_to_response, redirect
-from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseForbidden,HttpResponseNotModified, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseForbidden,HttpResponseNotModified, HttpResponseNotFound, JsonResponse
 from django.template import RequestContext
 from gitorial.models import User, Tutorial, Step
 import django.contrib.auth
@@ -131,7 +131,7 @@ def build_tutorials(user):
                     for item in user_tutorials]
 
 def build_steps(username, repo_name, tutorial, commits_data):
-    steps = []
+    #steps = []
     for commit_data in commits_data:
         step, is_new = Step.objects.get_or_create(tutorial=tutorial)
         if is_new:
@@ -155,34 +155,45 @@ def build_steps(username, repo_name, tutorial, commits_data):
 
             step.save()
 
-        steps.append({
-            "title": step.title,
-            "content_before": step.content_before,
-            "content_after": step.content_after,
-            "commit": {
-                "commit_url": step.diff_url,
-                "code_url": step.code_url,
-                "files": step.files
-            }
-        });
-    return steps
+        #steps.append({
+        #    "title": step.title,
+        #    "content_before": step.content_before,
+        #    "content_after": step.content_after,
+        #    "commit_url": step.diff_url,
+        #    "code_url": step.code_url,
+        #    "files": step.files
+        #});
+    #return steps
 
 def tutorial_new(request, username, repo):
     if request.method == 'POST':
         user = User.objects.get(username=username)
 
-        repo_r = requests.get('https://api.github.com/repos/%s/%s?client_id=%s&client_secret=%s' % (username, repo, settings.SOCIAL_AUTH_GITHUB_KEY, settings.SOCIAL_AUTH_GITHUB_SECRET))
-        repo_r_json = repo_r.json()
+        repo_r_json = requests.get(
+            'https://api.github.com/repos/%s/%s?client_id=%s&client_secret=%s' % (
+              username,
+              repo,
+              settings.SOCIAL_AUTH_GITHUB_KEY,
+              settings.SOCIAL_AUTH_GITHUB_SECRET)
+        ).json()
 
         tut_entry, is_new = Tutorial.objects.get_or_create(id=repo_r_json['id'], owner = user)
-        tut_entry.name = repo_r_json['name']
+
+        tut_entry.title = repo_r_json['name']
         tut_entry.description = repo_r_json['description']
+
+        tut_entry.repo_name = repo_r_json['name']
         tut_entry.repo_url = repo_r_json['url']
+
         tut_entry.owner = user
         tut_entry.save()
 
-        commits_r = requests.get(repo_r_json['commits_url'].replace('{/sha}', '') + ('?client_id=%s&client_secret=%s' % (settings.SOCIAL_AUTH_GITHUB_KEY, settings.SOCIAL_AUTH_GITHUB_SECRET)))
-        commits_r_json = commits_r.json()
+        commits_r_json = requests.get(
+            repo_r_json['commits_url'].replace('{/sha}', '') +
+            ('?client_id=%s&client_secret=%s' % (
+              settings.SOCIAL_AUTH_GITHUB_KEY,
+              settings.SOCIAL_AUTH_GITHUB_SECRET))
+        ).json()
 
         commits_data = []
         for commit in commits_r_json:
@@ -198,10 +209,7 @@ def tutorial_new(request, username, repo):
 
         build_steps(username, repo, tut_entry, commits_data)
 
-        return HttpResponse(json.dumps({
-            'tutorial_id': tut_entry.id
-            }),
-            content_type="application/json")
+        return JsonResponse({'tutorial_id': tut_entry.id}) 
     else:
         return HttpResponseNotAllowed(['POST'])
 
@@ -209,15 +217,24 @@ def tutorial(request, username, tutnum):
     if request.method == 'GET':
         # tut is an ID (number)
         tut_entry = Tutorial.objects.get(id=tutnum)
+
         response = {
             'id': tutnum,
             'title': tut_entry.title,
             'description': tut_entry.description,
+            'repo_name': tut_entry.repo_name,
             'repo_url': tut_entry.repo_url,
-            'steps': build_steps(tut_entry)
+            'steps': [{
+                'title': step.title,
+                'content_before': step.content_before,
+                'content_after': step.content_after,
+                'diff_url': step.diff_url,
+                'code_url': step.code_url,
+                'files': step.files
+            } for step in Step.objects.filter(tutorial=tutnum)]
         }
 
-        return HttpResponse(json.dumps(response), content_type="application/json")
+        return JsonResponse(response)
     elif request.method == 'DELETE':
         return HttpResponse(status="501")
     elif request.method == 'PATCH':

@@ -22,6 +22,7 @@ class User(models.Model):
 class Tutorial(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=500)
+    repo_name = models.CharField(max_length=100)
     repo_url = models.CharField(max_length=100)
     owner = models.ForeignKey(User)
     def __str__(self):
