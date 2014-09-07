@@ -9,7 +9,6 @@ gitorial.session =
         $.ajax
             dataType: 'json'
             type: 'GET'
-            async: false
             url: '/api/session/'
             headers:
                 'x-csrftoken' : $.cookie 'csrftoken'
@@ -93,6 +92,8 @@ gitorial.routes =
             data.isowner = gitorial.session.username is params[0]
             data.gitorial = gitorial
             $('#container').html gitorial.templates.edit data
+            gitorial.tutorials.data = data
+            $('textarea').autosize()
             return
         .fail gitorial.routes.fail
         return
@@ -141,17 +142,18 @@ gitorial.tutorials.utils =
         $.ajax
             dataType: 'json'
             url: '/api/' + user + '/' + reponame + '/'
-            async: false
             type: 'POST'
             headers:
                 'x-csrftoken' : $.cookie 'csrftoken'
         .done (data) ->
             url = '/#/' + user + '/' + data.tutorial_id + '/edit'
-            console.log "WE GOING TO ", url
-            window.location.href = url
+            location.href = url
             return
         .fail gitorial.routes.fail
         return
+
+gitorial.tutorials.data = null
+    
             
 # call router
 gitorial.router()
