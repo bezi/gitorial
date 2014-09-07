@@ -72,7 +72,7 @@ def user_view(request, username):
     try:
       User.objects.get(username=username).delete()
       return HttpResponse()
-    except DoesNotExist:
+    except:
       return HttpResponseNotFound()
 
   elif request.method =='PATCH':
@@ -105,44 +105,84 @@ def user_view(request, username):
     return HttpResponseNotAllowed(['POST', 'GET', 'DELETE'])
 
 def build_tutorials(user):
-    user_tutorials = Tutorial.objects.filter(owner=user).values('title', 'description', 'repo_url').order_by('id').reverse()
-    return [{'title': item['title'],
-             'description': item['description'],
-             'url': item['repo_url']}
-            for item in user_tutorials]
+  user_tutorials = Tutorial.objects.filter(owner=user).values('title', 'description', 'repo_url').order_by('id').reverse()
+  return [{'title': item['title'],
+           'description': item['description'],
+           'url': item['repo_url']}
+          for item in user_tutorials]
 
 
 def build_steps(tutorial):
-    return [{'title': item.title,
-             'content_before': item.content_before,
-             'content_after': item.content_after,
-             'commit': build_commit(item)
-            }
-            for item in Step.objects.filter(tutorial=tutorial).order_by('id')]
+  return [{'title': item.title,
+           'content_before': item.content_before,
+           'content_after': item.content_after,
+           'commit': build_commit(item)
+          }
+          for item in Step.objects.filter(tutorial=tutorial).order_by('id')]
 
 def build_commit(step):
-    commit = Commit.objects.get(step=step)
-    return {'diff_url': commit.diff_url,
-            'code_url': commit.code_url,
-            'files': build_files(commit)}
+  commit = Commit.objects.get(step=step)
+  return {'diff_url': commit.diff_url,
+          'code_url': commit.code_url,
+          'files': build_files(commit)}
 
 def build_files(commit):
-    commit_files = File.objects.filter(commit=commit).order_by('name')
-    return [{'name': item.name,
-             'lines': build_lines(item)} 
-            for item in commit_files]
+  commit_files = File.objects.filter(commit=commit).order_by('name')
+  return [{'name': item.name,
+           'lines': build_lines(item)} 
+          for item in commit_files]
 
 def build_lines(src_file):
-    file_lines = Line.objects.filter(src_file=src_file).order_by('number')
-    return [{'number': item.number,
-             'content': item.content,
-             'addition': item.addition,
-             'deletion': item.deletion} 
-             for item in file_lines]
+  file_lines = Line.objects.filter(src_file=src_file).order_by('number')
+  return [{'number': item.number,
+           'content': item.content,
+           'addition': item.addition,
+           'deletion': item.deletion} 
+           for item in file_lines]
 
 def tutorial_new(request, username, repo):
   if request.method == 'POST':
+    try:
+      user = User.objects.get(username=username)
 
+      repo_r = requests.get('https://api.github.com/repos/%s/%s?client_id=%s&client_secret=%s' % (username, repo, settings.SOCIAL_AUTH_GITHUB_KEY, settings.SOCIAL_AUTH_GITHUB_SECRET))
+      repo_r_json = repo_r.json()
+
+      tut_entry, is_new = Tutorial.objects.get_or_create(id=repo_r_json['id'])
+      if not is_new:
+        return HttpResponseForbidden()
+      else:
+        tut_entry.title = repo_r_json['title']
+        tut_entry.description = repo_r_json['description']
+        tut_entry.repo_url = repo_r_json['url']
+        tut_entry.owner = user
+        tut_entry.save()
+
+        commits_r = requests.get(repo_r_json['commits_url'].replace('{/sha}', '') + ('?client_id=%s&client_secret=%s' % (settings.SOCIAL_AUTH_GITHUB_KEY, settings.SOCIAL_AUTH_GITHUB_SECRET)))
+        commits_r_json = commits_r.json()
+
+        commits_data = []
+        for commit in commits_r_json:
+          (title_raw, _, message_raw) = commit.message.partition('\n')[0][:50]
+
+          results.append({
+            'sha': commit.sha,
+            'title': title_raw[:50],
+            'message': message_raw,
+            'diff_url': commit.html_url,
+            'code_url': 'https://github.com/%s/%s/tree/%s' % (username, repo, commit.sha)
+          })
+
+        commits_data.sort(reverse=True)
+
+        build_steps(username, repo, tut_entry, commits_data)
+
+        return HttpResponse(json.dumps({
+          'tutorial_id': tut_entry.id
+          }),
+          content_type="application/json")
+    except:
+      return HttpResponseNotFound('No such user with username.')
   else:
     return HttpResponseNotAllowed(['POST'])
 
@@ -154,12 +194,14 @@ def tutorial(request, username, tutnum):
                 'title': tut_entry.title,
                 'description': tut_entry.description,
                 'repo_url': tut_entry.repo_url,
-                'is_editable': False,
                 'steps': build_steps(tut_entry) 
                }
 
     return HttpResponse(json.dumps(response), content_type="application/json")
   elif request.method == 'DELETE':
+    return HttpResponse(status="501")
   elif request.method == 'PATCH':
+    return HttpResponse(status="501")
   else:
+    return HttpResponseNotAllowed(['POST','GET'])
 
