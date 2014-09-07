@@ -27,11 +27,11 @@ except:
 SECRET_KEY = '6=o8h-+6vt*7bwhn!wvj@+nan&p*hduv4*a)0-rt2%e09jgma_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(os.environ.get('DEBUG', False))
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.gitorial.com', 'localhost', 'gitorial.herokuapp.com']
 
 
 # Application definition
@@ -69,12 +69,16 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-DATABASES = {
-    'default': {
+DATABASES = {}
+
+if not DEBUG:
+    import dj_database_url
+    DATABASES['default'] = dj_database_url.config()
+else:
+    DATABASES['default'] = {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
     }
-}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
