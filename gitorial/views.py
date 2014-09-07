@@ -163,48 +163,44 @@ def build_commit(username, repo_name, commit_data):
 
 def tutorial_new(request, username, repo):
     if request.method == 'POST':
-        try:
-            user = User.objects.get(username=username)
+        user = User.objects.get(username=username)
 
-            repo_r = requests.get('https://api.github.com/repos/%s/%s?client_id=%s&client_secret=%s' % (username, repo, settings.SOCIAL_AUTH_GITHUB_KEY, settings.SOCIAL_AUTH_GITHUB_SECRET))
-            repo_r_json = repo_r.json()
+        repo_r = requests.get('https://api.github.com/repos/%s/%s?client_id=%s&client_secret=%s' % (username, repo, settings.SOCIAL_AUTH_GITHUB_KEY, settings.SOCIAL_AUTH_GITHUB_SECRET))
+        repo_r_json = repo_r.json()
 
-            tut_entry, is_new = Tutorial.objects.get_or_create(id=repo_r_json['id'])
-            if not is_new:
-                return HttpResponseForbidden()
-            else:
-                tut_entry.title = repo_r_json['title']
-                tut_entry.description = repo_r_json['description']
-                tut_entry.repo_url = repo_r_json['url']
-                tut_entry.owner = user
-                tut_entry.save()
+        tut_entry, is_new = Tutorial.objects.get_or_create(id=repo_r_json['id'], owner = user)
+        if not is_new:
+            return HttpResponseForbidden()
+        else:
+            tut_entry.name = repo_r_json['name']
+            tut_entry.description = repo_r_json['description']
+            tut_entry.repo_url = repo_r_json['url']
+            tut_entry.owner = user
+            tut_entry.save()
 
-                commits_r = requests.get(repo_r_json['commits_url'].replace('{/sha}', '') + ('?client_id=%s&client_secret=%s' % (settings.SOCIAL_AUTH_GITHUB_KEY, settings.SOCIAL_AUTH_GITHUB_SECRET)))
-                commits_r_json = commits_r.json()
+            commits_r = requests.get(repo_r_json['commits_url'].replace('{/sha}', '') + ('?client_id=%s&client_secret=%s' % (settings.SOCIAL_AUTH_GITHUB_KEY, settings.SOCIAL_AUTH_GITHUB_SECRET)))
+            commits_r_json = commits_r.json()
 
-                commits_data = []
-                for commit in commits_r_json:
-                    (title_raw, _, message_raw) = commit['message'].partition('\n')
+            commits_data = []
+            for commit in commits_r_json:
+                (title_raw, _, message_raw) = commit['message'].partition('\n')
 
-                    results.append({
-                        'sha': commit['sha'],
-                        'title': title_raw[:50],
-                        'message': message_raw,
-                        'diff_url': commit['html_url'],
-                        'code_url': 'https://github.com/%s/%s/tree/%s' % (username, repo, commit['sha'])
-                    })
+                results.append({
+                    'sha': commit['sha'],
+                    'title': title_raw[:50],
+                    'message': message_raw,
+                    'diff_url': commit['html_url'],
+                    'code_url': 'https://github.com/%s/%s/tree/%s' % (username, repo, commit['sha'])
+                })
 
-                commits_data.sort(reverse=True)
+            commits_data.sort(reverse=True)
 
-                build_steps(username, repo, tut_entry, commits_data)
+            build_steps(username, repo, tut_entry, commits_data)
 
-                return HttpResponse(json.dumps({
-                    'tutorial_id': tut_entry.id
-                    }),
-                    content_type="application/json")
-        except Exception as e:
-            print(e)
-            return HttpResponseNotFound('No such user with username.')
+            return HttpResponse(json.dumps({
+                'tutorial_id': tut_entry.id
+                }),
+                content_type="application/json")
     else:
         return HttpResponseNotAllowed(['POST'])
 
