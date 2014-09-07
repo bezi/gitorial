@@ -63,7 +63,7 @@ gitorial.routes =
                 return
 
             $ '.user-listing-title'
-            .on 'hover', (e) -> $(this).text += ' +'
+            .on 'hover', (e) -> $(this).text($(this).text() += ' +')
             .on 'click', (e) -> 
                 gitorial.tutorials.utils.makeNew(e)
                 return
