@@ -48,26 +48,24 @@ response = {
         title: 'step_title'
         content_before: 'not too'
         content_after: 'hard to see what this does'
-        commit: {
-            commit_url:
-            code_url:
-            files: [
-                {
-                    name:
-                    chunks: [
-                        [
-                            {
-                                old_number: 33/undefined
-                                new_number: 35/undefined
-                                content: "int i = 3;"
-                                addition: true/false/undefined
-                                deletion: true/false/undefined
-                            }
-                        ]
+        diff_url:
+        code_url:
+        files: [
+            {
+                name:
+                chunks: [
+                    [
+                        {
+                            old_number: 33/undefined
+                            new_number: 35/undefined
+                            content: "int i = 3;"
+                            addition: true/false/undefined
+                            deletion: true/false/undefined
+                        }
                     ]
-                }
-            ]
-        }
+                ]
+            }
+        ]
     ]
 }
 ```

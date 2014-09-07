@@ -31,14 +31,12 @@ class Step(models.Model):
     title = models.CharField(max_length=100)
     content_before = models.CharField(max_length=500)
     content_after = models.CharField(max_length=500)
+
+    diff_url = models.CharField(max_length=100)
+    code_url = models.CharField(max_length=100)
+
+    files = JSONField()
+
     tutorial = models.ForeignKey(Tutorial)
     def __str__(self):
         return self.title
-
-class Commit(models.Model):
-    diff_url = models.CharField(max_length=100)
-    code_url = models.CharField(max_length=100)
-    step = models.OneToOneField(Step)
-    files = JSONField()
-    def __str__(self):
-        return self.commit_url

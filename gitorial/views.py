@@ -2,7 +2,7 @@ from django.core import serializers
 from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseForbidden,HttpResponseNotModified, HttpResponseNotFound
 from django.template import RequestContext
-from gitorial.models import User, Tutorial, Step, Commit
+from gitorial.models import User, Tutorial, Step
 import django.contrib.auth
 import social.apps.django_app.views
 import json
@@ -138,37 +138,34 @@ def build_steps(username, repo_name, tutorial, commits_data):
             step.title = commit_data['title']
             step.content_before = commit_data['message']
             step.content_after = ''
-            step.commit = build_commit(username, repo_name, commit_data, step)
+
+            step.diff_url = commit_data['diff_url']
+            step.code_url = commit_data['code_url']
+
+            api_r = requests.get(
+                'https://api.github.com/repos/%s/%s/commits/%s?client_id=%s&client_secret=%s' % (
+                    username,
+                    repo_name,
+                    commit_data['sha'],
+                    settings.SOCIAL_AUTH_GITHUB_KEY,
+                    settings.SOCIAL_AUTH_GITHUB_SECRET
+                    ), headers={'Accept': 'application/vnd.github.diff'})
+
+            step.files = diff.parse(api_r.text)
+
             step.save()
+
         steps.append({
             "title": step.title,
             "content_before": step.content_before,
             "content_after": step.content_after,
             "commit": {
-                    "commit_url": step.commit.diff_url,
-                    "code_url": step.commit.code_url,
-                    "files": step.commit.files
-                }
-            });
+                "commit_url": step.diff_url,
+                "code_url": step.code_url,
+                "files": step.files
+            }
+        });
     return steps
-
-def build_commit(username, repo_name, commit_data, step):
-    commit, is_new = Commit.objects.get_or_create(step=step)
-    if is_new:
-        commit.diff_url = commit_data['diff_url']
-        commit.code_url = commit_data['code_url']
-        api_r = requests.get(
-            'https://api.github.com/users/%s/%s/commits/%s?client_id=%s&client_secret=%s' % (
-                username,
-                repo_name,
-                commit_data['sha'],
-                settings.SOCIAL_AUTH_GITHUB_KEY,
-                settings.SOCIAL_AUTH_GITHUB_SECRET
-            ))
-        print(api_r.headers['X-RateLimit-Remaining'])
-        commit.files = diff.parse(api_r.text)
-        commit.save()
-    return commit
 
 def tutorial_new(request, username, repo):
     if request.method == 'POST':
@@ -213,11 +210,11 @@ def tutorial(request, username, tutnum):
         # tut is an ID (number)
         tut_entry = Tutorial.objects.get(id=tutnum)
         response = {
-                'id': tutnum,
-                'title': tut_entry.title,
-                'description': tut_entry.description,
-                'repo_url': tut_entry.repo_url,
-                'steps': build_steps(tut_entry)
+            'id': tutnum,
+            'title': tut_entry.title,
+            'description': tut_entry.description,
+            'repo_url': tut_entry.repo_url,
+            'steps': build_steps(tut_entry)
         }
 
         return HttpResponse(json.dumps(response), content_type="application/json")
