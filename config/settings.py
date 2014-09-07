@@ -27,6 +27,8 @@ except:
 SECRET_KEY = '6=o8h-+6vt*7bwhn!wvj@+nan&p*hduv4*a)0-rt2%e09jgma_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = ['.gitorial.com', 'localhost', 'gitorial.herokuapp.com']
