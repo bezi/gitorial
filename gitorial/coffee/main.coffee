@@ -56,11 +56,18 @@ gitorial.routes =
             data.gitorial = gitorial
             $('#container').html gitorial.templates.profile data
             $ '.new-tutorial-button'
+
+            # Event listeners
             .on 'click', (e) ->
                 gitorial.routes.tutorialPane = not gitorial.routes.tutorialPane
                 gitorial.router()
                 return
-            return
+
+            $ '.user-listing-title'
+            .on 'click', (e) -> 
+                gitorial.tutorials.utils.makeNew(e)
+                return
+
         .fail ->
             $.ajax
                 dataType: 'json'
@@ -125,6 +132,26 @@ gitorial.router = ->
         gitorial.routes.home()
     return
 
+# Tutorial generator utilities
+gitorial.tutorials = {}
+gitorial.tutorials.utils =
+    makeNew: (e) ->
+        reponame = e.target.innerHTML
+        user = gitorial.session.username
+        $.ajax
+            dataType: 'json'
+            url: '/api/' + user + '/' + reponame + '/'
+            type: 'POST'
+            headers:
+                'x-csrftoken' : $.cookie 'csrftoken'
+        .done (data) ->
+            url = '/#/' + user + '/' + data.url + '/edit'
+            location = url
+            gitorial.router()
+            return
+        .fail gitorial.routes.fail
+        return
+            
 # call router
 gitorial.router()
 
