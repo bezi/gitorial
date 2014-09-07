@@ -61,6 +61,7 @@
           gitorial.session.update();
         });
         $('.user-listing-title').on('click', function(e) {
+          e.preventDefault();
           gitorial.tutorials.handleClick(e);
         });
         return $('#');

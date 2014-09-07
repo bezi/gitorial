@@ -12,6 +12,8 @@ def parse(diff_text):
     for file_diff in re.split('diff --git a/.* b/.*\n', diff_text)[1:]:
         f = {}
         lines = file_diff.split('\n')
+        if len(lines) is 0:
+            continue
         while 'index ' not in lines[0]:
             lines = lines[1:]
         if '/dev/null' not in lines[1]:
@@ -21,8 +23,11 @@ def parse(diff_text):
         f['chunks'] = []
         for file_chunk_diff in file_diff.split('\n@@')[1:]:
             lines = file_chunk_diff.split('\n')
-            old_line_numbers, new_line_numbers = ((int(s), int(e))
-                for (s, e) in re.findall('[-+](\d*),(\d*) ', lines[0]))
+            try:
+                old_line_numbers, new_line_numbers = ((int(s), int(e))
+                    for (s, e) in re.findall('[-+](\d*),(\d*) ', lines[0]))
+            except:
+              continue
             lines[0] = lines[0][re.search(' .* @@', lines[0]).end():]
             old_line_number = old_line_numbers[0]
             new_line_number = new_line_numbers[0]

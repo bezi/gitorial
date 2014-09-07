@@ -65,6 +65,7 @@ gitorial.routes =
 
             $ '.user-listing-title'
             .on 'click', (e) -> 
+                e.preventDefault()
                 gitorial.tutorials.handleClick(e)
                 return
 
