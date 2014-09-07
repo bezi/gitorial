@@ -1,6 +1,7 @@
 Django==1.7
 certifi==14.05.14
 dj-static==0.0.6
+dj-database-use==0.3.0
 gunicorn==19.1.1
 jsonfield==1.0.0
 oauthlib==0.6.3
