@@ -143,10 +143,10 @@
           'x-csrftoken': $.cookie('csrftoken')
         }
       }).done(function(data) {
-        var location, url;
+        var url;
         url = '/#/' + user + '/' + data.tutorial_id + '/edit';
-        location = url;
-        gitorial.router();
+        console.log("WE GOING TO ", url);
+        window.location.href = url;
       }).fail(gitorial.routes.fail);
     }
   };
