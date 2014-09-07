@@ -71,14 +71,21 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {}
 
-if not DEBUG:
-    import dj_database_url
-    DATABASES['default'] = dj_database_url.config()
-else:
-    DATABASES['default'] = {
+#if not DEBUG:
+#    import dj_database_url
+#    DATABASES['default'] = dj_database_url.config()
+#else:
+#    DATABASES['default'] = {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
+#    }
+import dj_database_url
+DATABASES = {
+    'default': dj_database_url.config() if dj_database_url.config() else {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
     }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
