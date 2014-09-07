@@ -111,17 +111,6 @@ def build_tutorials(user):
              'url': item['repo_url']}
             for item in user_tutorials]
 
-def tutorial(request, username, tutnum):
-    tut_entry = Tutorial.objects.get(id=tutnum)
-    response = {'id': tutnum,
-                'title': tut_entry.title,
-                'description': tut_entry.description,
-                'repo_url': tut_entry.repo_url,
-                'is_editable': False,
-                'steps': build_steps(tut_entry) 
-               }
-
-    return HttpResponse(json.dumps(response), content_type="application/json")
 
 def build_steps(tutorial):
     return [{'title': item.title,
@@ -150,3 +139,27 @@ def build_lines(src_file):
              'addition': item.addition,
              'deletion': item.deletion} 
              for item in file_lines]
+
+def tutorial_new(request, username, repo):
+  if request.method == 'POST':
+
+  else:
+    return HttpResponseNotAllowed(['POST'])
+
+def tutorial(request, username, tutnum):
+  if request.method == 'GET':
+    # tut is an ID (number)
+    tut_entry = Tutorial.objects.get(id=tutnum)
+    response = {'id': tutnum,
+                'title': tut_entry.title,
+                'description': tut_entry.description,
+                'repo_url': tut_entry.repo_url,
+                'is_editable': False,
+                'steps': build_steps(tut_entry) 
+               }
+
+    return HttpResponse(json.dumps(response), content_type="application/json")
+  elif request.method == 'DELETE':
+  elif request.method == 'PATCH':
+  else:
+

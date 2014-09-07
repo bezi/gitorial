@@ -14,5 +14,6 @@ urlpatterns = patterns('',
 
     # API
     url(r'^api/(?P<username>.+)/(?P<tutnum>[0-9]+)/$', views.tutorial),
+    url(r'^api/(?P<username>.+)/(?P<repo>.+)/$', views.tutorial_new),
     url(r'^api/(?P<username>.+)/$', views.user_view),
 )
