@@ -21,7 +21,7 @@ class User(models.Model):
 
 class Tutorial(models.Model):
     title = models.CharField(max_length=100)
-    description = models.CharField(max_length=500)
+    description = models.TextField()
     repo_name = models.CharField(max_length=100)
     repo_url = models.CharField(max_length=100)
     owner = models.ForeignKey(User)
@@ -31,11 +31,11 @@ class Tutorial(models.Model):
 class Step(models.Model):
     index = models.IntegerField()
     title = models.CharField(max_length=100)
-    content_before = models.CharField(max_length=500)
-    content_after = models.CharField(max_length=500)
+    content_before = models.TextField()
+    content_after = models.TextField()
 
-    diff_url = models.CharField(max_length=100)
-    code_url = models.CharField(max_length=100)
+    diff_url = models.CharField(max_length=250)
+    code_url = models.CharField(max_length=250)
 
     files = JSONField()
 
