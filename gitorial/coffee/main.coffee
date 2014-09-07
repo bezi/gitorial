@@ -1,17 +1,17 @@
 # @file main.coffee
 # @brief Defines the routes and javascript events for the gitorial app
 
-window.gitorial = {};
+window.gitorial = {}
 
 # Session
 gitorial.session =
     update: ->
         $.ajax
-            dataType: 'json'            
+            dataType: 'json'
             type: 'GET'
             async: false
             url: '/api/session/'
-            headers: 
+            headers:
                 'x-csrftoken' : $.cookie 'csrftoken'
         .done (data) ->
             gitorial.session.username = data.username
@@ -32,7 +32,7 @@ gitorial.templates =
     fail: Handlebars.compile $("#not-found-template").html()
 
 # Routing
-gitorial.routes = 
+gitorial.routes =
     home: ->
         data =
             gitorial: gitorial
@@ -47,22 +47,31 @@ gitorial.routes =
             dataType: 'json'
             url: address
             type: 'GET'
-            headers: 
+            headers:
                 'x-csrftoken' : $.cookie 'csrftoken'
         .done (data) ->
             data.isowner = gitorial.session.username is params[0]
             data.tutorialPane = gitorial.routes.tutorialPane
             data.reposPane = not data.tutorialPane
             data.gitorial = gitorial
-            data.avatar_url = 'assets/imgs/panda.jpg'
-            $('#container').html gitorial.templates.profile data 
+            $('#container').html gitorial.templates.profile data
             $ '.new-tutorial-button'
             .on 'click', (e) ->
                 gitorial.routes.tutorialPane = not gitorial.routes.tutorialPane
-                gitorial.router();
+                gitorial.router()
                 return
             return
-        .fail gitorial.routes.fail
+        .fail ->
+            $.ajax
+                dataType: 'json'
+                url: address
+                type: 'POST'
+                headers:
+                    'x-csrftoken' : $.cookie 'csrftoken'
+            .done (data) ->
+                gitorial.router()
+                return
+            .fail gitorial.routes.fail
         return
 
     edit: (params) ->
@@ -70,13 +79,13 @@ gitorial.routes =
         $.ajax
             dataType: 'json'
             url: address
-            headers: 
+            headers:
                 'x-csrftoken' : $.cookie 'csrftoken'
             type: 'GET'
         .done (data) ->
             data.isowner = gitorial.session.username is params[0]
             data.gitorial = gitorial
-            $('#container').html gitorial.templates.edit data 
+            $('#container').html gitorial.templates.edit data
             return
         .fail gitorial.routes.fail
         return
@@ -105,19 +114,19 @@ gitorial.routes =
 gitorial.router = ->
     gitorial.session.update()
     route = location.hash[1..]
-    [username, tutname, editflag] = route.replace(/\/$/, '').split('/')[1..];
-    if editflag? and editflag == "edit" 
+    [username, tutname, editflag] = route.replace(/\/$/, '').split('/')[1..]
+    if editflag? and editflag == "edit"
         gitorial.routes.edit [username, tutname]
-    else if tutname? 
+    else if tutname?
         gitorial.routes.view [username, tutname]
-    else if username? 
+    else if username?
         gitorial.routes.profile [username]
-    else 
+    else
         gitorial.routes.home()
     return
 
 # call router
 gitorial.router()
 
-$ window 
+$ window
 .on 'hashchange', gitorial.router
