@@ -167,12 +167,21 @@
           gitorial.session.update();
         }).fail(gitorial.routes.fail);
       }
+    },
+    data: null,
+    save: function() {
+      $.ajax({
+        dataType: 'json',
+        url: '/api/' + gitorial.session.username + '/' + gitorial.session.tutorial_id + '/',
+        type: 'POST',
+        data: gitorial.tutorials.data
+      }).done(function(data) {
+        console.log("Saved.");
+      }).fail(function() {
+        console.log("Unable to save.");
+      });
     }
   };
-
-  gitorial.tutorials.data = null;
-
-  gitorial.save = function() {};
 
   gitorial.session.update();
 
