@@ -75,12 +75,12 @@ def user_view(request, username):
                     'description': repo['description']
                 } for repo in repo_r_json]
 
-                result['tutorials'] = [{
-                    'id': tutorial.id,
-                    'title': tutorial.title,
-                    'description': tutorial.description,
-                    'repo_url': tutorial.repo_url
-                } for tutorial in Tutorial.objects.filter(owner=user)]
+            result['tutorials'] = [{
+                'id': tutorial.id,
+                'title': tutorial.title,
+                'description': tutorial.description,
+                'repo_url': tutorial.repo_url
+            } for tutorial in Tutorial.objects.filter(owner=user)]
 
             return HttpResponse(json.dumps(result),
                     content_type="application/json")
@@ -134,9 +134,10 @@ def build_tutorials(user):
                     for item in user_tutorials]
 
 def build_steps(username, repo_name, tutorial, commits_data):
-    #steps = []
+    index = 0
     for commit_data in commits_data:
-        step, is_new = Step.objects.get_or_create(tutorial=tutorial)
+        index += 1
+        step, is_new = Step.objects.get_or_create(index=index, tutorial=tutorial)
         if is_new:
             step.title = commit_data['title']
             step.content_before = commit_data['message']
@@ -157,16 +158,6 @@ def build_steps(username, repo_name, tutorial, commits_data):
             step.files = diff.parse(api_r.text)
 
             step.save()
-
-        #steps.append({
-        #    "title": step.title,
-        #    "content_before": step.content_before,
-        #    "content_after": step.content_after,
-        #    "commit_url": step.diff_url,
-        #    "code_url": step.code_url,
-        #    "files": step.files
-        #});
-    #return steps
 
 def tutorial_new(request, username, repo):
     if request.method == 'POST':
@@ -239,9 +230,29 @@ def tutorial(request, username, tutnum):
 
         return JsonResponse(response)
     elif request.method == 'DELETE':
-        return HttpResponse(status="501")
+        # tut is an ID (number)
+        Tutorial.objects.get(id=tutnum).delete()
+        return HttpResponse()
     elif request.method == 'PATCH':
-        return HttpResponse(status="501")
+        patch = json.loads(request.body)
+        try:
+            tut_entry = Tutorial.objects.get(id=tutnum)
+
+            tut_entry.title = patch['title']
+            tut_entry.description = patch['description']
+            tut_entry.save()
+
+            index = 0
+            for step_json in patch['steps']:
+                index += 1
+                step = Step.objects.get(tutorial=tut_entry, index=index)
+
+                step.title = patch[index - 1]['title']
+                step.content_before = patch[index - 1]['content_before']
+                step.content_after = patch[index - 1]['content_after']
+                step.save()
+        except Tutorial.DoesNotExist:
+            return HttpResponseNotFound()
     else:
         return HttpResponseNotAllowed(['POST','GET'])
 
