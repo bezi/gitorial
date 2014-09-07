@@ -12,7 +12,12 @@ def parse(diff_text):
     for file_diff in re.split('diff --git a/.* b/.*\n', diff_text)[1:]:
         f = {}
         lines = file_diff.split('\n')
-        f['name'] = lines[1][5:]
+        while 'index ' not in lines[0]:
+            lines = lines[1:]
+        if '/dev/null' not in lines[1]:
+            f['name'] = lines[1][5:]
+        else:
+            f['name'] = lines[2][5:]
         f['chunks'] = []
         for file_chunk_diff in file_diff.split('\n@@')[1:]:
             lines = file_chunk_diff.split('\n')
