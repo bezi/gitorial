@@ -147,8 +147,8 @@ gitorial.tutorials.utils =
                 'x-csrftoken' : $.cookie 'csrftoken'
         .done (data) ->
             url = '/#/' + user + '/' + data.tutorial_id + '/edit'
-            location = url
-            gitorial.router()
+            console.log "WE GOING TO ", url
+            window.location.href = url
             return
         .fail gitorial.routes.fail
         return
