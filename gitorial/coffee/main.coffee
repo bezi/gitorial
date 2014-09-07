@@ -97,6 +97,10 @@ gitorial.routes =
             $('#container').html gitorial.templates.edit data
             gitorial.tutorials.data = data
             $('textarea').autosize()
+            $('.tutorial-generate-button').on 'click', (e) ->
+                e.preventDefault()
+                [heads..., tail] = window.location.hash.split('/')
+                window.location.hash = heads.join('/')
             return
         .fail gitorial.routes.fail
         return
@@ -113,6 +117,9 @@ gitorial.routes =
             data.isowner = gitorial.session.username is params[0]
             data.gitorial = gitorial
             $('#container').html gitorial.templates.view data
+            $('.tutorial-edit-button').on 'click', (e)->
+                e.preventDefault()
+                window.location.hash += if window.location.hash[window.location.hash.length-1] is '/' then 'edit' else '/edit'
                 
             return
         .fail gitorial.routes.fail
