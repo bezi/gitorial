@@ -48,7 +48,11 @@
           </p>
         </li>
       </ol>
-      <a href="#" class="button sign-in-button"><i class="contact-icon fa fa-github"></i> Sign in with GitHub</a>
+      {{#if is_logged_in}}
+      <a href="#/{{username}}" class="button go-to-profile-button"><i class="fa fa-user"></i> Go to profile</a>
+      {{else}}
+      <a href="/login/github/" class="button sign-in-button"><i class="contact-icon fa fa-github"></i> Sign in with GitHub</a>
+      {{/if}}
     </article>
   </script>
   <script id="profile-template" type="text/x-handlebars-template">
@@ -66,22 +70,38 @@
         {{#if is_owner}}
         <a href="#" class="button new-tutorial-button"><i class="fa fa-plus-circle"></i>&nbsp;Create new tutorial</a>
 
-        <a href="#" class="button sign-out-button"><i class="fa fa-sign-out"></i>&nbsp;Sign out</a>
+        <a href="/logout/github/" class="button sign-out-button"><i class="fa fa-sign-out"></i>&nbsp;Sign out</a>
         {{/if}}
       </section>
-      <section class="tutorials">
-        <header>Tutorials</header>
+      {{#if repos}}
+      <section class="user-listings">
+        <header>select a repo</header>
         <ul>
-        {{#each tutorials}}
-          <li class="tutorial-listing">
-            <a href="{{url}}" class="tutorial-listing-title">{{title}}</a>
-            <p class="tutorial-listing-description">
+        {{#each repos}}
+          <li class="user-listing">
+            <a href="{{url}}" class="user-listing-title">{{title}}</a>
+            <p class="user-listing-description">
               {{description}}
             </p>
           </li>
         {{/each}}
         </ul>
       </section>
+      {{else}}{{#if tutorials}}
+      <section class="user-listings">
+        <header>tutorials</header>
+        <ul>
+        {{#each tutorials}}
+          <li class="user-listing">
+            <a href="{{url}}" class="user-listing-title">{{title}}</a>
+            <p class="user-listing-description">
+              {{description}}
+            </p>
+          </li>
+        {{/each}}
+        </ul>
+      </section>
+      {{/if}}{{/if}}
     </article>
   </script>
   <script id="edit-template" type="text/x-handlebars-template">
@@ -110,17 +130,37 @@
         <textarea class="step-content-before">{{content_before}}</textarea>
         <div class="step-code">
           <div>
-            <a href="{{commit.diff_url}}">View diff</a>
-            <a href="{{commit.code_url}}">View code</a>
+            <a href="{{diff.diff_url}}">View diff</a>
+            <a href="{{diff.code_url}}">View code</a>
           </div>
-          {{#each commit.files}}
+          {{#each diff.files}}
           <section class="code-diff">
             <header>{{name}}:</header>
             <ol class="code-diff-lines">
-            {{#each lines}}
+            {{#each chunks}}
+              {{#each this}}
               <li class="{{#if addition}}addition{{/if}} {{#if deletion}}deletion{{/if}}">
-                <code>{{number}}</code>
-                <code>{{content}}</code>
+                <code>
+                {{#if old_number}}
+                  {{old_number}}
+                  {{else}}
+                  &nbsp;&nbsp;&nbsp;
+                  {{/if}}
+                </code>
+                <code>
+                  {{#if new_number}}
+                  {{new_number}}
+                  {{else}}
+                  &nbsp;&nbsp;&nbsp;
+                  {{/if}}
+                </code>
+                <code>
+                  {{{whitespace}}}{{content}}&nbsp;
+                </code>
+              </li>
+              {{/each}}
+              <li>
+                <hr>
               </li>
             {{/each}}
             </ol>
@@ -168,10 +208,30 @@
           <section class="code-diff">
             <header>{{name}}:</header>
             <ol class="code-diff-lines">
-            {{#each lines}}
+            {{#each chunks}}
+              {{#each this}}
               <li class="{{#if addition}}addition{{/if}} {{#if deletion}}deletion{{/if}}">
-                <code>{{number}}</code>
-                <code>{{content}}</code>
+                <code>
+                {{#if old_number}}
+                  {{old_number}}
+                  {{else}}
+                  &nbsp;&nbsp;&nbsp;
+                  {{/if}}
+                </code>
+                <code>
+                  {{#if new_number}}
+                  {{new_number}}
+                  {{else}}
+                  &nbsp;&nbsp;&nbsp;
+                  {{/if}}
+                </code>
+                <code>
+                  {{{whitespace}}}{{content}}&nbsp;
+                </code>
+              </li>
+              {{/each}}
+              <li>
+                <hr>
               </li>
             {{/each}}
             </ol>
@@ -187,6 +247,7 @@
   </script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/autosize.js/1.18.4/jquery.autosize.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.4/handlebars.min.js"></script>
   <script src="assets/js/main.js"></script>
 </body>

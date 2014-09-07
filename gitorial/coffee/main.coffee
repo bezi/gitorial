@@ -1,7 +1,7 @@
 # @file main.coffee
 # @brief Defines the routes and javascript events for the gitorial app
 
-gitorial = {};
+window.gitorial = {};
 
 # Session
 gitorial.session =
@@ -10,26 +10,15 @@ gitorial.session =
             dataType: 'json'            
             type: 'GET'
             async: false
-            url: '/api/session'
+            url: '/api/session/'
+            headers: 
+                'x-csrftoken' : $.cookie 'csrftoken'
         .done (data) ->
-            gitorial.session.session = data
+            gitorial.session.username = data.username
+            return
         .fail gitorial.routes.fail
-
-    login: ->
-        $.ajax
-            dataType: 'json'            
-            type: 'POST'
-            url: '/api/session'
-        .done gitorial.session.update
-
-    logout: ->
-        $.ajax
-            dataType: 'json'            
-            type: 'DELETE'
-            url: '/api/session'
-        .done gitorial.session.update
         
-    session: null
+    username: null
 
 # Templating
 gitorial.templates =
@@ -42,26 +31,32 @@ gitorial.templates =
 # Routing
 gitorial.routes = 
     profile: (params) ->
-        address = '/api/' + params[0]
+        address = '/api/' + params[0] + '/'
         $.ajax
             dataType: 'json'
             url: address
             type: 'GET'
+            headers: 
+                'x-csrftoken' : $.cookie 'csrftoken'
         .done (data) ->
             $('#container').html gitorial.templates.profile(data) 
         .fail ->
             $.ajax
                 dataType: 'json'
                 url: address
+                headers: 
+                    'x-csrftoken' : $.cookie 'csrftoken'
                 type: 'POST'
             .done gitorial.router
             .fail gitorial.fail
 
     edit: (params) ->
-        address = '/api/' + params[0] + '/' + params[1]
+        address = '/api/' + params[0] + '/' + params[1] + '/'
         $.ajax
             dataType: 'json'
             url: address
+            headers: 
+                'x-csrftoken' : $.cookie 'csrftoken'
             type: 'GET'
         .done (data) ->
             $('#container').html gitorial.templates.edit(data) 
@@ -69,12 +64,12 @@ gitorial.routes =
             
 
     view: (params) ->
-        $.ajax
-            dataType: ''
-        address = '/api/' + params[0] + '/' + params[1]
+        address = '/api/' + params[0] + '/' + params[1] + '/'
         $.ajax
             dataType: 'json'
             url: address
+            headers:
+                'x-csrftoken' : $.cookie 'csrftoken'
             type: 'GET'
         .done (data) ->
             $('#container').html gitorial.templates.view(data) 
@@ -87,6 +82,7 @@ gitorial.routes =
         $('#container').html gitorial.templates.fail()
 
 gitorial.router = ->
+    gitorial.session.update()
     route = location.hash[1..]
     [username, tutname, editflag] = route.replace(/\/$/, '').split('/')[1..];
     if editflag? and editflag == "edit" 
@@ -98,12 +94,8 @@ gitorial.router = ->
     else 
         gitorial.routes.home()
 
-# attach listeners to errythang
-
 # call router
 gitorial.router()
+
 $ window 
 .on 'hashchange', gitorial.router
-
-# export gitorial
-window.gitorial = gitorial

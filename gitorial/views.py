@@ -12,48 +12,28 @@ from datetime import datetime, timedelta
 
 # Create your views here.
 def index(request):
-  return render_to_response('index.html', 
-      {}, 
+  return render_to_response('index.html', {}, 
       context_instance=RequestContext(request))
 
-def session(request):
-  if request.method == 'POST':
-    social.apps.django_app.views.auth(request, 'github')
+def logout(request):
+  django.contrib.auth.logout(request)
+  return redirect('/')
 
-  elif request.method == 'GET':
+def session(request):
+  if request.method == 'GET':
     if(request.user is not None and
        request.user.is_authenticated()):
-      user = {
-        'username': request.user.username,
-        'first_name': request.user.first_name,
-        'last_name': request.user.last_name,
-        'last_login': request.user.last_login,
-        'email': request.user.email,
-        'id': request.user.id,
-        'pk': request.user.pk
-      }
-
-      # I can't find an attribute for pictures.
-      # We can either get this manually (with the API itself),
-      # or I might be able to figure it out with python-social-auth
-
-      print('---')
-      print('\n'.join(dir(request.user)))
-      print('---')
+      username = request.user.username
     else:
-      user = False
+      username = ''
 
     return HttpResponse(json.dumps({
-          'user': user
+          'username': username
         }),
         content_type="application/json")
-    
-  elif request.method == 'DELETE':
-    django.contrib.auth.logout(request)
-    return HttpResponse()
 
   else:
-    return HttpResponseNotAllowed(['POST', 'GET', 'DELETE'])
+    return HttpResponseNotAllowed(['GET'])
 
 def user_view(request, username):
   if request.method =='POST':
@@ -83,9 +63,7 @@ def user_view(request, username):
     try:
       user = User.objects.get(username=username)
 
-      return HttpResponse(json.dumps({
-        'user': user.getDict()
-      }),
+      return HttpResponse(json.dumps(user.getDict()),
       content_type="application/json")
     except:
       return HttpResponseNotFound()
