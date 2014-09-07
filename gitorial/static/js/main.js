@@ -58,6 +58,9 @@
           gitorial.routes.tutorialPane = !gitorial.routes.tutorialPane;
           gitorial.router();
         });
+        return $('.user-listing-title').on('click', function(e) {
+          gitorial.tutorials.utils.makeNew(e);
+        });
       }).fail(function() {
         return $.ajax({
           dataType: 'json',
@@ -121,6 +124,30 @@
       gitorial.routes.profile([username]);
     } else {
       gitorial.routes.home();
+    }
+  };
+
+  gitorial.tutorials = {};
+
+  gitorial.tutorials.utils = {
+    makeNew: function(e) {
+      var reponame, user;
+      reponame = e.target.innerHTML;
+      user = gitorial.session.username;
+      $.ajax({
+        dataType: 'json',
+        url: '/api/' + user + '/' + reponame + '/',
+        async: false,
+        type: 'POST',
+        headers: {
+          'x-csrftoken': $.cookie('csrftoken')
+        }
+      }).done(function(data) {
+        var location, url;
+        url = '/#/' + user + '/' + data.url + '/edit';
+        location = url;
+        gitorial.router();
+      }).fail(gitorial.routes.fail);
     }
   };
 

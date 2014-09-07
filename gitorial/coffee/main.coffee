@@ -141,6 +141,7 @@ gitorial.tutorials.utils =
         $.ajax
             dataType: 'json'
             url: '/api/' + user + '/' + reponame + '/'
+            async: false
             type: 'POST'
             headers:
                 'x-csrftoken' : $.cookie 'csrftoken'
