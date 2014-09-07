@@ -29,6 +29,7 @@ class Tutorial(models.Model):
         return self.title
 
 class Step(models.Model):
+    index = models.IntegerField()
     title = models.CharField(max_length=100)
     content_before = models.CharField(max_length=500)
     content_after = models.CharField(max_length=500)
