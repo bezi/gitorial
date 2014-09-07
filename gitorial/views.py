@@ -135,8 +135,10 @@ def build_tutorials(user):
 
 def build_steps(username, repo_name, tutorial, commits_data):
     #steps = []
+    index = 0
     for commit_data in commits_data:
-        step, is_new = Step.objects.get_or_create(tutorial=tutorial)
+        index += 1
+        step, is_new = Step.objects.get_or_create(index=index, tutorial=tutorial)
         if is_new:
             step.title = commit_data['title']
             step.content_before = commit_data['message']
@@ -239,7 +241,9 @@ def tutorial(request, username, tutnum):
 
         return JsonResponse(response)
     elif request.method == 'DELETE':
-        return HttpResponse(status="501")
+        # tut is an ID (number)
+        Tutorial.objects.get(id=tutnum).delete()
+        return HttpResponse()
     elif request.method == 'PATCH':
         return HttpResponse(status="501")
     else:
