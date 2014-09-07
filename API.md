@@ -8,7 +8,6 @@ response = {
     name: 'Tom Shen' // full name
     username: 'tomshen' // github username
     avatar_url: 'https:blah' // avatar
-    is_owner: true // true if requested by this user
     tutorials : [
         {
             title: 'tutorial title',
@@ -45,7 +44,6 @@ response = {
     title: 'tutorial title'
     description: 'shizzles mah nizzles'
     repo_url: 'github.com/here/it/is'
-    is_editable: true // true if requested by owner
     steps: [
         title: 'step_title'
         content_before: 'not too'
