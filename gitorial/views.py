@@ -70,14 +70,17 @@ def user_view(request, username):
                 repo_r = requests.get('https://api.github.com/users/%s/repos?client_id=%s&client_secret=%s&sort=pushed' % (username, settings.SOCIAL_AUTH_GITHUB_KEY, settings.SOCIAL_AUTH_GITHUB_SECRET))
                 repo_r_json = repo_r.json()
 
-                repos = []
-                for repo in repo_r_json:
-                    repos.append({
-                        'title': repo['name'],
-                        'description': repo['description']
-                    })
+                result['repos'] = [{
+                    'title': repo['name'],
+                    'description': repo['description']
+                } for repo in repo_r_json]
 
-                result['repos'] = repos
+                result['tutorials'] = [{
+                    'id': tutorial.id,
+                    'title': tutorial.title,
+                    'description': tutorial.description,
+                    'repo_url': tutorial.repo_url
+                } for tutorial in Tutorial.objects.filter(owner=user)]
 
             return HttpResponse(json.dumps(result),
                     content_type="application/json")
