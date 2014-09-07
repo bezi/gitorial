@@ -139,8 +139,8 @@
         <textarea class="step-content-before">{{content_before}}</textarea>
         <div class="step-code">
           <div>
-            <a href="{{diff.diff_url}}">View diff</a>
-            <a href="{{diff.code_url}}">View code</a>
+            <a href="{{diff_url}}">View diff</a>
+            <a href="{{code_url}}">View code</a>
           </div>
           {{#each files}}
           <section class="code-diff">
@@ -210,8 +210,8 @@
         </div>
         <div class="step-code">
           <div>
-            <a href="{{commit.diff_url}}">View diff</a>
-            <a href="{{commit.code_url}}">View code</a>
+            <a href="{{diff_url}}">View diff</a>
+            <a href="{{code_url}}">View code</a>
           </div>
           {{#each files}}
           <section class="code-diff">

@@ -14,6 +14,7 @@
       }).done(function(data) {
         gitorial.session.username = data.username;
         gitorial.session.loggedin = data.username !== "";
+        gitorial.router();
       }).fail(gitorial.routes.fail);
     },
     username: null,
@@ -55,11 +56,12 @@
         $('#container').html(gitorial.templates.profile(data));
         $('.new-tutorial-button').on('click', function(e) {
           gitorial.routes.tutorialPane = !gitorial.routes.tutorialPane;
-          gitorial.router();
+          gitorial.session.update();
         });
-        return $('.user-listing-title').on('click', function(e) {
-          gitorial.tutorials.utils.makeNew(e);
+        $('.user-listing-title').on('click', function(e) {
+          gitorial.tutorials.utils.handleClick(e);
         });
+        return $('#');
       }).fail(function() {
         return $.ajax({
           dataType: 'json',
@@ -69,7 +71,7 @@
             'x-csrftoken': $.cookie('csrftoken')
           }
         }).done(function(data) {
-          gitorial.router();
+          gitorial.session.update();
         }).fail(gitorial.routes.fail);
       });
     },
@@ -114,7 +116,6 @@
 
   gitorial.router = function() {
     var editflag, route, tutname, username, _ref;
-    gitorial.session.update();
     route = location.hash.slice(1);
     _ref = route.replace(/\/$/, '').split('/').slice(1), username = _ref[0], tutname = _ref[1], editflag = _ref[2];
     if ((editflag != null) && editflag === "edit") {
@@ -131,29 +132,50 @@
   gitorial.tutorials = {};
 
   gitorial.tutorials.utils = {
-    makeNew: function(e) {
+    handleClick: function(e) {
       var reponame, user;
-      reponame = e.target.innerHTML;
-      user = gitorial.session.username;
-      $.ajax({
-        dataType: 'json',
-        url: '/api/' + user + '/' + reponame + '/',
-        type: 'POST',
-        headers: {
-          'x-csrftoken': $.cookie('csrftoken')
-        }
-      }).done(function(data) {
-        var url;
-        url = '/#/' + user + '/' + data.tutorial_id + '/edit';
-        location.href = url;
-      }).fail(gitorial.routes.fail);
+      if (!gitorial.routes.tutorialPane) {
+        reponame = e.target.innerHTML;
+        user = gitorial.session.username;
+        $.ajax({
+          dataType: 'json',
+          url: '/api/' + user + '/' + reponame + '/',
+          type: 'POST',
+          headers: {
+            'x-csrftoken': $.cookie('csrftoken')
+          }
+        }).done(function(data) {
+          var url;
+          url = '/#/' + user + '/' + data.tutorial_id + '/edit';
+          location.href = url;
+          gitorial.session.update();
+        }).fail(gitorial.routes.fail);
+      } else {
+        reponame = e.target.innerHTML;
+        user = gitorial.session.username;
+        $.ajax({
+          dataType: 'json',
+          url: '/api/' + user + '/' + reponame + '/',
+          type: 'GET',
+          headers: {
+            'x-csrftoken': $.cookie('csrftoken')
+          }
+        }).done(function(data) {
+          var url;
+          url = '/#/' + user + '/' + data.tutorial_id + '/';
+          location.href = url;
+          gitorial.session.update();
+        }).fail(gitorial.routes.fail);
+      }
     }
   };
 
   gitorial.tutorials.data = null;
 
-  gitorial.router();
+  gitorial.session.update();
 
-  $(window).on('hashchange', gitorial.router);
+  $(window).on('hashchange', gitorial.session.update);
+
+  $(window).on('ready', gitorial.session.update);
 
 }).call(this);

@@ -15,6 +15,7 @@ gitorial.session =
         .done (data) ->
             gitorial.session.username = data.username
             gitorial.session.loggedin = data.username isnt ""
+            gitorial.router();
             return
         .fail gitorial.routes.fail
         return
@@ -59,13 +60,15 @@ gitorial.routes =
             # Event listeners
             .on 'click', (e) ->
                 gitorial.routes.tutorialPane = not gitorial.routes.tutorialPane
-                gitorial.router()
+                gitorial.session.update()
                 return
 
             $ '.user-listing-title'
             .on 'click', (e) -> 
-                gitorial.tutorials.utils.makeNew(e)
+                gitorial.tutorials.utils.handleClick(e)
                 return
+
+            $ '#'
 
         .fail ->
             $.ajax
@@ -75,7 +78,7 @@ gitorial.routes =
                 headers:
                     'x-csrftoken' : $.cookie 'csrftoken'
             .done (data) ->
-                gitorial.router()
+                gitorial.session.update()
                 return
             .fail gitorial.routes.fail
         return
@@ -120,7 +123,6 @@ gitorial.routes =
         return
 
 gitorial.router = ->
-    gitorial.session.update()
     route = location.hash[1..]
     [username, tutname, editflag] = route.replace(/\/$/, '').split('/')[1..]
     if editflag? and editflag == "edit"
@@ -136,27 +138,46 @@ gitorial.router = ->
 # Tutorial generator utilities
 gitorial.tutorials = {}
 gitorial.tutorials.utils =
-    makeNew: (e) ->
-        reponame = e.target.innerHTML
-        user = gitorial.session.username
-        $.ajax
-            dataType: 'json'
-            url: '/api/' + user + '/' + reponame + '/'
-            type: 'POST'
-            headers:
-                'x-csrftoken' : $.cookie 'csrftoken'
-        .done (data) ->
-            url = '/#/' + user + '/' + data.tutorial_id + '/edit'
-            location.href = url
-            return
-        .fail gitorial.routes.fail
+    handleClick: (e) ->
+        if not gitorial.routes.tutorialPane
+            reponame = e.target.innerHTML
+            user = gitorial.session.username
+            $.ajax
+                dataType: 'json'
+                url: '/api/' + user + '/' + reponame + '/'
+                type: 'POST'
+                headers:
+                    'x-csrftoken' : $.cookie 'csrftoken'
+            .done (data) ->
+                url = '/#/' + user + '/' + data.tutorial_id + '/edit'
+                location.href = url
+                gitorial.session.update()
+                return
+            .fail gitorial.routes.fail
+        else
+            reponame = e.target.innerHTML
+            user = gitorial.session.username
+            $.ajax
+                dataType: 'json'
+                url: '/api/' + user + '/' + reponame + '/'
+                type: 'GET'
+                headers:
+                    'x-csrftoken' : $.cookie 'csrftoken'
+            .done (data) ->
+                url = '/#/' + user + '/' + data.tutorial_id + '/'
+                location.href = url
+                gitorial.session.update()
+                return
+            .fail gitorial.routes.fail
         return
 
 gitorial.tutorials.data = null
     
-            
 # call router
-gitorial.router()
+gitorial.session.update()
 
 $ window
-.on 'hashchange', gitorial.router
+.on 'hashchange', gitorial.session.update
+
+$ window
+.on 'ready', gitorial.session.update
