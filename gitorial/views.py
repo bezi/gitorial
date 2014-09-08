@@ -163,7 +163,7 @@ def build_steps(username, repo_name, tutorial, commits_data):
                     settings.SOCIAL_AUTH_GITHUB_SECRET
                     ), headers={'Accept': 'application/vnd.github.diff'})
 
-            step.files = diff.parse(api_r.text)
+            step.files = json.dumps(diff.parse(api_r.text))
 
             step.save()
 
@@ -232,7 +232,7 @@ def tutorial(request, username, tutnum):
                 'content_after': step.content_after,
                 'diff_url': step.diff_url,
                 'code_url': step.code_url,
-                'files': step.files
+                'files': json.loads(step.files)
             } for step in Step.objects.filter(tutorial=tutnum)]
         }
 

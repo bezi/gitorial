@@ -37,7 +37,7 @@ class Step(models.Model):
     diff_url = models.CharField(max_length=250)
     code_url = models.CharField(max_length=250)
 
-    files = JSONField()
+    files = models.TextField()
 
     tutorial = models.ForeignKey(Tutorial)
     def __str__(self):
