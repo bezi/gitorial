@@ -8,6 +8,7 @@ curl -H "Accept: application/vnd.github.diff" \
 ```
 '''
 def parse(diff_text):
+    print(diff_text)
     files = []
     for file_diff in re.split('diff --git a/.* b/.*\n', diff_text)[1:]:
         f = {}
@@ -62,6 +63,8 @@ def parse(diff_text):
             f['chunks'].append(chunk_lines)
 
         files.append(f)
+
+    print(str(files))
     return files
 
 if __name__ == '__main__':
