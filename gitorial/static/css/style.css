@@ -306,17 +306,17 @@ textarea.tutorial-title {
 
 .code-diff-lines > * > code:first-child {
   float: left;
-  width: 10%;
+  width: 5%;
 }
 
 .code-diff-lines > * > code:nth-child(2) {
   float: left;
-  width: 10%;
+  width: 5%;
 }
 
 .code-diff-lines > * > code:last-child {
   float: left;
-  width: 80%;
+  width: 90%;
 }
 
 .addition > * {
