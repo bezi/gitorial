@@ -190,6 +190,7 @@ def tutorial_new(request, username, repo):
         tut_entry.owner = user
         tut_entry.save()
 
+        # Get all commits, most recent first
         commits_r_json = requests.get(
             repo_r_json['commits_url'].replace('{/sha}', '') +
             ('?client_id=%s&client_secret=%s' % (
@@ -233,7 +234,7 @@ def tutorial(request, username, tutnum):
                 'diff_url': step.diff_url,
                 'code_url': step.code_url,
                 'files': json.loads(step.files)
-            } for step in Step.objects.filter(tutorial=tutnum)]
+            } for step in Step.objects.filter(tutorial=tutnum).order_by('index')]
         }
 
         return JsonResponse(response)

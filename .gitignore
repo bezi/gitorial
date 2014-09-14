@@ -33,3 +33,6 @@ db.sqlite3
 
 # Heroku
 .env
+
+# ctags generated output
+tags
