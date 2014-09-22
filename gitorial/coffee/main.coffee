@@ -117,6 +117,10 @@ gitorial.routes =
         .done (data) ->
             data.isowner = gitorial.session.username is params[0]
             data.gitorial = gitorial
+            data.steps.map (value) ->
+                value.content_before = marked value.content_before
+                value.content_after = marked value.content_after
+                return value
             $('#container').html gitorial.templates.view data
             $('.tutorial-edit-button').on 'click', (e)->
                 e.preventDefault()
