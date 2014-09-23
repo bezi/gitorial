@@ -1,5 +1,8 @@
 # gitorial
 
+# What the hell is this?
+Gitorial is a webapp that takes github repos and builds tutorial blogs from them.  See it live at [gitorial.com](gitorial.com).
+
 ## Installation
 If you want, like, explanations for what's going on in this setup (i.e., you don't just believe that I speak the truth), you can read [here][getting-started] for more information.
 
