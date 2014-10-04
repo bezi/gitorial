@@ -1,6 +1,6 @@
 # gitorial
 
-# What
+## What
 Gitorial is a webapp that takes github repos and builds tutorial blogs from them.  See it live at [gitorial.com](gitorial.com).
 
 ## Installation
