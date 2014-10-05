@@ -63,8 +63,6 @@ def parse(diff_text):
             f['chunks'].append(chunk_lines)
 
         files.append(f)
-
-    print(str(files))
     return files
 
 if __name__ == '__main__':

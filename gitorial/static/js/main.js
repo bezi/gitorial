@@ -115,6 +115,11 @@
       }).done(function(data) {
         data.isowner = gitorial.session.username === params[0];
         data.gitorial = gitorial;
+        data.steps.map(function(value) {
+          value.content_before = marked(value.content_before);
+          value.content_after = marked(value.content_after);
+          return value;
+        });
         $('#container').html(gitorial.templates.view(data));
         $('.tutorial-edit-button').on('click', function(e) {
           e.preventDefault();

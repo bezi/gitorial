@@ -1,7 +1,10 @@
 # gitorial
 
+## What
+Gitorial is a webapp that takes github repos and builds tutorial blogs from them.  See it live at [gitorial.com](gitorial.com).
+
 ## Installation
-If you want, like, explanations (i.e., you don't just believe that I speak the truth), you can read [here][getting-started] for more information.
+If you want, like, explanations for what's going on in this setup (i.e., you don't just believe that I speak the truth), you can read [here][getting-started] for more information.
 
 We're using python 3.4, so make sure you have it.
 
@@ -41,7 +44,7 @@ manage.py startapp gitorial
 ```
 
 ### First-time Setup
-These commands, unlike in the previous section, will need to be run once for every user the first time after cloninin/pulling this repo.
+These commands, unlike in the previous section, will need to be run once for every user the first time after clonining this repo.
 
 ```bash
 # Make sure that you are working on the (gitorial) virtualenv
