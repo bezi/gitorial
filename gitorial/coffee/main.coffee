@@ -15,7 +15,7 @@ gitorial.session =
         .done (data) ->
             gitorial.session.username = data.username
             gitorial.session.loggedin = data.username isnt ""
-            gitorial.router();
+            gitorial.router()
             return
         .fail gitorial.routes.fail
         return
@@ -64,7 +64,7 @@ gitorial.routes =
                 return
 
             $ '.user-listing-title'
-            .on 'click', (e) -> 
+            .on 'click', (e) ->
                 e.preventDefault()
                 gitorial.tutorials.handleClick(e)
                 return
