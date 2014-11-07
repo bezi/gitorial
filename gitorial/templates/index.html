@@ -118,7 +118,7 @@
         <span class="gitorial-header"><strong>git</strong>orial</span>
         {{#if gitorial.session.loggedin}}
             <span>
-              <a href="#/profile/{{gitorial.session.username}}" class="user-name">
+              <a href="#/{{gitorial.session.username}}" class="user-name">
               {{#if gitorial.session.name}}
                 {{gitorial.session.name}}
               {{else}}
@@ -188,7 +188,7 @@
       <header class="tutorial-header">
         <span class="gitorial-header"><strong>git</strong>orial</span>
         <span>
-          <a href="#/profile/{{user.username}}" class="user-name">
+          <a href="#/{{user.username}}" class="user-name">
           {{#if user.name}}
             {{user.name}}
           {{else}}
